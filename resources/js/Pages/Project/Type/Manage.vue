@@ -12,18 +12,15 @@ import {
 import useProjectTypeManage from '@/Composables/Project/Type/Manage';
 import ScrollableTable from '@/Components/ScrollableTable.vue';
 
-const props = defineProps({
+defineProps({
   project_type_list: Array,
   total: Number
 });
 
 const {
-  form,
-  projectTypeList,
-  totalCount,
-  search,
-  action
-} = useProjectTypeManage(props);
+  form, search, fields,
+  store, edit, update, destroy, clear
+} = useProjectTypeManage();
 </script>
 
 <template>
@@ -40,22 +37,15 @@ const {
       </BFormGroup>
       <template #footer>
         <div class="text-end">
-          <BButton variant="primary" @click="action.store" v-if="!form.id">Add</BButton>
-          <BButton variant="primary" @click="action.update" v-if="form.id">Update</BButton>
-          <BButton class="ms-1" variant="danger" @click="action.cancel" v-if="form.id">Cancel</BButton>
+          <BButton variant="primary" @click="store" v-if="!form.id">Add</BButton>
+          <BButton variant="primary" @click="update" v-if="form.id">Update</BButton>
+          <BButton class="ms-1" variant="danger" @click="clear" v-if="form.id">Cancel</BButton>
         </div>
       </template>
     </BCard>
 
-    <ScrollableTable :total="totalCount" :list="projectTypeList" :form="form"
-      :destroyRoute="'project.type.destroy'" :fetchRoute="'project.type.fetch'"
-      :fields="[
-        { key: 'serial', label: '.No' },
-        { key: 'label', label: 'Label' },
-        { key: 'remark', label: 'Remark' },
-        { key: 'active', label: 'Active' },
-        { key: 'actions', label: 'Actions' }
-      ]">
+    <ScrollableTable :total="total" :list="project_type_list" :form="form" :fields="fields" 
+      @onDestroy="destroy" @onEdit="edit">
       <template #searchBar>
         <BCol cols="3" class="ms-auto">
           <BInputGroup>

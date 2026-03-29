@@ -1,11 +1,7 @@
-import { useForm } from '@inertiajs/vue3';
-import axios from 'axios';
-import { ref, watch } from 'vue';
-import { usePatch, useValidationMessage } from '@/Utilities/helpers.js'
+import { router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-export default function (props) {
-  const projectTypeList = ref([...(props.project_type_list ?? [])]);
-  const totalCount = ref(props.total);
+export default function () {
   const form = useForm({
     id: '',
     label: '',
@@ -15,45 +11,65 @@ export default function (props) {
   const search = ref({
     label: ""
   });
+  const fields = [
+    { key: 'serial', label: '.No' },
+    { key: 'label', label: 'Label' },
+    { key: 'remark', label: 'Remark' },
+    { key: 'active', label: 'Active' },
+    { key: 'actions', label: 'Actions' }
+  ];
 
-  watch(
-    () => projectTypeList.length,
-    (v) => {
-      totalCount.value = v;
-    }
-  );
+  /**
+   * create a project type and clear the form inputs if success
+   */
+  function store() {
+    router.post(route('project.type.store'), form, {
+      preserveState: true,
+      onSuccess: () => {
+        clear();
+      }
+    });
+  }
 
-  const action = {
-    store: () => {
-      axios
-        .post(route('project.type.store'), form.data())
-        .then((res) => {
-          form.reset();
-          form.clearErrors();
-          form.active = true;
-          projectTypeList.value.unshift(res.data.project_type);
-        })
-        .catch((err) => useValidationMessage(form, err));
-    },
-    update: () => {
-      axios
-        .put(route('project.type.update', form.id), form.data())
-        .then((res) => {
-          form.reset();
-          form.clearErrors();
-          form.active = true;
-          usePatch(projectTypeList, res.data.project_type);
-        })
-        .catch((err) => useValidationMessage(form, err));
-    },
-    cancel: () => {
-      form.id = "";
-      form.label = "";
-      form.remark = "";
-      form.active = true;
-      form.clearErrors();
-    },
-  };
+  /**
+   * Put all the data of item into form inputs
+   * @param {object} item
+   */
+  function edit(item) {
+    Object.assign(form, item);
+    form.active = Boolean(item.active);
+  }
 
-  return { form, projectTypeList, totalCount, search, action };
+  /**
+   * update the project type of id from form and clear the form inputs if success
+   */
+  function update() {
+    router.put(route('project.type.update', form.id), form, {
+      preserveState: true,
+      onSuccess: () => {
+        clear();
+      }
+    });
+  }
+
+  /**
+   * delete a project form list by id
+   * @param {id} id 
+   */
+  function destroy(id) {
+    router.delete(route('project.type.destroy', id, {
+      preserveState: true
+    }));
+  }
+
+  /**
+   * clear the form inputs
+   */
+  function clear() {
+    form.reset();
+    form.active = true;
+    form.clearErrors();
+  }
+
+  return { form, search, fields, store, edit, update, destroy, clear };
 }

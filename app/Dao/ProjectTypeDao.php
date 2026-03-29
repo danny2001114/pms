@@ -6,7 +6,6 @@ use App\Contracts\Dao\ProjectTypeDaoInterface;
 use App\Models\ProjectType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class ProjectTypeDao implements ProjectTypeDaoInterface
 {
@@ -17,13 +16,10 @@ class ProjectTypeDao implements ProjectTypeDaoInterface
 
     public function getList(array $filter): Collection
     {
-        return $this->projectType::when($filter["last_id"] ?? null, 
-                                    fn (Builder $query) => $query->where("id", "<", $filter["last_id"]))
-                                ->when($filter["label"] ?? null, 
-                                    fn (Builder $query) => $query->where("label", "LIKE", "%{$filter['label']}%"))
-                                ->orderByDesc("id")
-                                ->limit(config("constants.LOAD_LIMIT"))
-                                ->get();
+        return $this->buildSearchQuery($filter)
+                    ->orderByDesc("id")
+                    ->limit(config("constants.LOAD_LIMIT"))
+                    ->get();
     }
 
     public function store(array $dto): ProjectType
@@ -47,16 +43,14 @@ class ProjectTypeDao implements ProjectTypeDaoInterface
 
     public function getTotalCount(array $filter): int
     {
-        return $this->projectType::when($filter["label"] ?? null, 
-                                    fn (Builder $query) => $query->where("label", "LIKE", "%{$filter['label']}%"))
-                                ->count();
+        return $this->buildSearchQuery($filter)->count();
     }
 
-    protected function buildSearchQuery(Request $request): Builder
+    protected function buildSearchQuery(array $filter): Builder
     {
-        return $this->projectType::when($request->get('label'), 
-                                    fn ($query) => $query->where('label', 'LIKE', "%{$request->label}%"))
-                                ->when(is_bool($request->get('active')), 
-                                    fn ($query) => $query->where('active', $request->active)) ;
+        return $this->projectType::when($filter['label'] ?? null, 
+                                    fn ($query) => $query->where('label', 'LIKE', "%{$filter['label']}%"))
+                                ->when(is_bool($filter['active'] ?? null), 
+                                    fn ($query) => $query->where('active', $filter['active'])) ;
     }
 }
