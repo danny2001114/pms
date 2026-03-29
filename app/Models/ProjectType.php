@@ -12,7 +12,6 @@ class ProjectType extends Model
     protected $table = 'project_types';
     protected $fillable = [
         'label',
-        'difficulty',
         'remark',
         'active'
     ];

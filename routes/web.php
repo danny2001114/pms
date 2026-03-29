@@ -1,21 +1,23 @@
 <?php
 
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTypeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);re
-    return Inertia::render("Welcome");
-});
+    return Inertia::render("Dashboard");
+})->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    
-});
+Route::prefix('project')->as('project.')->group(function () {
+    Route::resource('', ProjectController::class);
 
-require __DIR__.'/auth.php';
+    Route::prefix('type')->as('type.')->controller(ProjectTypeController::class)->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::post('', 'store')->name('store');
+        Route::put('/{id}', 'update')->whereNumber('id')->name('update');
+        Route::delete('/{id}', 'destroy')->whereNumber('id')->name('destroy');
+        Route::get('fetch', 'fetch')->name('fetch');
+    });
+});
