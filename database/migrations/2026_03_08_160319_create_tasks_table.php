@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id');
             $table->text('description');
             $table->tinyInteger('priority')->default(2)->comment('1: low, 2: mediumn, 3: high');
-            $table->tinyInteger('state')->default(1)->comment('1: develop, 2: test, 3: fix');
+            $table->tinyInteger('state')->default(1)->comment('1: pending, 2: developing, 3: testing, 4: fixing, 5: completed');
             $table->integer('percentage')->default(0);
             $table->date('start_date');
             $table->date('end_date');

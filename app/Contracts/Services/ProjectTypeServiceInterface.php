@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface ProjectTypeServiceInterface
 {
-    public function getList(array $filter): Collection;
+    public function getList(?array $filter = []): Collection;
     public function store(ProjectTypeRequest $request): ProjectType;
     public function update(ProjectTypeRequest $request, int $id): ProjectType;
     public function delete(int $id): int;

@@ -1,49 +1,52 @@
-<template>
-  <div class="container mt-5">
-    <h1 class="mb-4">Projects</h1>
-    <BButton variant="primary" :href="route('project.create')" class="mb-3">
-      Create New
-    </BButton>
-    <BButton variant="primary" :href="route('project.type.index')" class="mb-3">
-      Manage Type
-    </BButton>
-    <BTable :items="projects.data" :fields="fields" striped hover>
-      <template #cell(actions)="data">
-        <BButton
-          variant="info"
-          size="sm"
-          :href="route('project.show', data.item.id)"
-          class="me-2"
-        >
-          Show
-        </BButton>
-        <BButton
-          variant="warning"
-          size="sm"
-          :href="route('project.edit', data.item.id)"
-          class="me-2"
-        >
-          Edit
-        </BButton>
-        <BButton
-          variant="danger"
-          size="sm"
-          @click="destroy(data.item.id)"
-        >
-          Delete
-        </BButton>
-      </template>
-    </BTable>
-  </div>
-</template>
-
 <script setup>
-import { BButton, BTable } from 'bootstrap-vue-next';
+import { 
+  BButton, 
+  BListGroup, 
+  BListGroupItem,
+  BAlert
+} from 'bootstrap-vue-next';
 import useProjectIndex from '@/Composables/Project/Index';
 
 const props = defineProps({
-  projects: Object
+  projectLists: Object
 });
 
-const { fields, destroy } = useProjectIndex();
+const { destroy } = useProjectIndex();
 </script>
+<template>
+  <div class="container mt-5">
+    <h1 class="mb-4">Projects</h1>
+    <div class="d-flex align-items-center">
+      <BAlert dismissible variant="success" :show="true">
+        Delete Successfully !
+      </BAlert>
+      <div class="ms-auto">
+        <BButton variant="primary" :href="route('project.create')" class="mb-3">
+          Create New
+        </BButton>
+        <BButton variant="warning" :href="route('project.type.index')" class="mb-3 ms-2">
+          Manage Type
+        </BButton>
+      </div>
+    </div>
+    <div class="row">
+      <template v-for="([type, list]) in Object.entries(projectLists)" :key="type">
+        <div class="col-4">
+          <h6>{{ type }}</h6>
+          <BListGroup>
+            <BListGroupItem class="d-flex" v-for="([_, project]) in Object.entries(list)" 
+              :key="project.id" v-if="list.length" :href="route('project.show', project.id)">
+                {{ project.title }}
+                <BButton variant="danger" @click="destroy(project.id)" class="ms-auto">
+                  Delete
+                </BButton>
+            </BListGroupItem>
+            <BListGroupItem v-else>
+              Empty
+            </BListGroupItem>
+          </BListGroup>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

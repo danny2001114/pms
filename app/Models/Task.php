@@ -20,4 +20,10 @@ class Task extends Model
         'start_date',
         'end_date'
     ];
+
+    public const PENDING = 1;
+    public const DEVELOPING = 2;
+    public const TESTING = 3;
+    public const FIXING = 4;
+    public const COMPLETED = 5;
 }

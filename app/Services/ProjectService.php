@@ -7,7 +7,7 @@ use App\Contracts\Services\ProjectServiceInterface;
 use App\Dto\Project\ProjectCreateDto;
 use App\Dto\Project\ProjectUpdateDto;
 use App\Http\Requests\ProjectRequest;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Project;
 
 class ProjectService implements ProjectServiceInterface
 {
@@ -19,15 +19,28 @@ class ProjectService implements ProjectServiceInterface
     )
     {}
 
-    public function getList(?int $lastId): Collection
+    public function getList(): array
     {
-        return $this->projectDao->getList($lastId);
+        $pending = $this->projectDao->getPending();
+        $processing = $this->projectDao->getProcessing();
+        $completed = $this->projectDao->getCompleted();
+
+        return compact('pending', 'processing', 'completed');;
+    }
+
+    public function getDetail(int $id): Project
+    {
+        return $this->projectDao->getDetail($id);
     }
 
     public function store(ProjectRequest $request): void
     {
+        $data = $request->validated();
+        $data['code'] = $this->generateCode();
+        $data['owner_id'] = 1;//auth('sanctum')->user()->id;
+
         $this->projectDao->store(
-            $this->projectCreateDto::pack($request->validated())
+            $this->projectCreateDto::pack($data)
         );
     }
 
@@ -41,5 +54,11 @@ class ProjectService implements ProjectServiceInterface
     public function delete(int $id): void
     {
         $this->projectDao->delete($id);
+    }
+
+    protected function generateCode(): string
+    {
+        $total = $this->projectDao->getCountByDate(now());
+        return 'P' . now()->format('Ymd') . sprintf("%05d", $total + 1);
     }
 }

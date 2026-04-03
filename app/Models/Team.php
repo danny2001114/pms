@@ -12,7 +12,7 @@ class Team extends Model
     protected $table = 'teams';
     protected $fillable = [
         'name',
-        'leader',
+        'leader_id',
         'image',
         'description'
     ];

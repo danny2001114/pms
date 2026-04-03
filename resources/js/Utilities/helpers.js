@@ -19,3 +19,15 @@ export function useValidationMessage(form, err) {
   form.clearErrors();
   form.setError(normalized);
 }
+
+export function useSetOption(data) {
+  return Object.entries(data).map(([value, label]) => ({value, label}));
+}
+
+export function useHumanizeStr(str) {
+  return str.replace(/[_]+/g, ' ')
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .toLowerCase()
+            .replace(/\b\w/g, c => c.toUpperCase())
+            .trim();
+}

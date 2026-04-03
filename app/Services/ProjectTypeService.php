@@ -18,7 +18,7 @@ class ProjectTypeService implements ProjectTypeServiceInterface
     )
     {}
 
-    public function getList(array $filter): Collection
+    public function getList(?array $filter = []): Collection
     {
         return $this->projectTypeDao->getList($filter);
     }

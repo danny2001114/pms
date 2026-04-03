@@ -1,20 +1,49 @@
-<template>
-  <div class="container mt-5">
-    <h1 class="mb-4">{{ project.title }}</h1>
-    <p>{{ project.description }}</p>
-    <BButton variant="primary" :href="route('project.index')" class="me-2">
-      Back to Posts
-    </BButton>
-    <BButton variant="warning" :href="route('project.edit', project.id)">
-      Edit
-    </BButton>
-  </div>
-</template>
-
 <script setup>
-import { BButton } from 'bootstrap-vue-next';
+import { 
+  BButton,
+  BCard,
+  BRow,
+  BCol
+} from 'bootstrap-vue-next';
+import { useHumanizeStr } from '../../Utilities/helpers';
 
-defineProps({
+const props = defineProps({
   project: Object,
 });
+
+const info = {
+  code: props.project.code,
+  owner: props.project.recipient?.name ?? props.project.owner?.name ?? "Admin",
+  state: props.project.state_text,
+  type: props.project.type.label,
+  priority: props.project.priority_text,
+  start_date: props.project.start_date,
+  end_date: props.project.end_date,
+}
+
 </script>
+<template>
+  <div class="container mt-5">
+    <BCard>
+      <template #header>
+        <h3>{{ project.title }}</h3>
+      </template>
+      <BRow v-for="([label, value], index) in Object.entries(info)" :key="index">
+        <BCol cols="2">{{ useHumanizeStr(label) }}</BCol>
+        <BCol cols="8">: {{ value }}</BCol>
+      </BRow>
+      <hr>
+      <b class="mt-3">Description</b>
+      <p>{{ project.description }}</p>
+    </BCard>
+
+    <div class="mt-3">
+      <BButton variant="primary" :href="route('project.index')" class="me-2">
+        Back
+      </BButton>
+      <BButton variant="warning" :href="route('project.edit', project.id)">
+        Edit
+      </BButton>
+    </div>
+  </div>
+</template>

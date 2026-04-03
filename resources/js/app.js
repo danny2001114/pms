@@ -4,7 +4,6 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist';
 import { createPinia } from 'pinia';
-import { createBootstrap } from 'bootstrap-vue-next';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
@@ -19,12 +18,14 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
+        const app = createApp({ render: () => h(App, props) });
+
+        app.use(plugin)
             .use(ZiggyVue)
             .use(createPinia())
-            .use(createBootstrap())
             .mount(el);
+
+        return app;
     },
     progress: {
         color: '#4B5563',

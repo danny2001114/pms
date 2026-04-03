@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('project_types', function (Blueprint $table) {
             $table->id();
             $table->string('label');
-            $table->tinyInteger('difficulty')->comment('1: low, 2: middle, 3: high');
             $table->text('remark')->nullable();
             $table->boolean('active')->nullable()->default(true);
             $table->timestamps();
