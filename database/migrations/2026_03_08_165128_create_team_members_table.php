@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('member_id')->unique('member');
             $table->unsignedBigInteger('team_id');
             $table->timestamps();
-            $table->foreign('member_id')->on('members')->references('id')->cascadeOnDelete();
+            $table->foreign('member_id')->on('users')->references('id')->cascadeOnDelete();
             $table->foreign('team_id')->on('teams')->references('id')->cascadeOnDelete();
             $table->softDeletesDatetime();
         });

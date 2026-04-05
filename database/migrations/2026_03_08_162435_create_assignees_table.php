@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('cur_active')->default(true);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('created_at')->useCurrent(); // get assigned date by create at date
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('task_id')->on('tasks')->references('id')->cascadeOnDelete();
         });

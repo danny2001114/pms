@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('members', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('code', 6)->unique();
-            $table->string('password', 20);
+            $table->string('password', 60);
             $table->string('name', 100);
             $table->string("email", 100);
             $table->string("phone", 11);
@@ -22,8 +22,8 @@ return new class extends Migration
             $table->tinyInteger("gender")->comment("1: male, 2: female");
             $table->date("birthday")->nullable();
             $table->text("address");
-            $table->text("bio");
-            $table->string("image", 100);
+            $table->text("bio")->nullable();
+            $table->string("image", 100)->nullable();
             $table->rememberToken();
             $table->softDeletesDatetime();
             $table->timestamps();
@@ -44,7 +44,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('members');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('sessions');
     }
 };

@@ -13,7 +13,7 @@ const props = defineProps({
 
 const info = {
   code: props.project.code,
-  owner: props.project.recipient?.name ?? props.project.owner?.name ?? "Admin",
+  owner: props.project.owner.name,
   state: props.project.state_text,
   type: props.project.type.label,
   priority: props.project.priority_text,

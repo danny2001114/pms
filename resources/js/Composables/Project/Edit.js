@@ -5,7 +5,7 @@ export default function (props) {
   const form = useForm({
     title: detail.title,
     order: detail.order,
-    recipient_id: detail.recipient_id ?? '',
+    owner_id: detail.owner_id,
     state: detail.state,
     type_id: detail.type_id,
     priority: detail.priority,

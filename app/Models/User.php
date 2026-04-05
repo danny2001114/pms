@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Member extends Authenticatable
+class User extends Authenticatable
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'members';
+    protected $table = 'users';
     protected $fillable = [
         'code',
         'password',

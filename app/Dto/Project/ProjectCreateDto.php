@@ -12,6 +12,7 @@ class ProjectCreateDto extends BaseDto
         public readonly string $title,
         public readonly int $owner_id,
         public readonly string $description,
+        public readonly int $created_by,
         public readonly ?int $state,
         public readonly ?bool $active,
         public readonly ?int $type_id,

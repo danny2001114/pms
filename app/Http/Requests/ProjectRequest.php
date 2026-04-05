@@ -14,12 +14,13 @@ class ProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
+        return [
             'order' => [
                 "required",
                 "integer",
                 Rule::unique('projects', 'order')->ignore($this->id),
             ],
+            'owner_id' => "nullable|integer|exists:members,id",
             'title' => "required|string|max:255",
             'description' => "required|string|max:5000",
             'state' => "nullable|integer|in:" . implode(',', config('constants.PROJECT.STATES.ID')),
@@ -29,11 +30,5 @@ class ProjectRequest extends FormRequest
             'start_date' => "required|date|date_format:Y-m-d|before:end_date",
             'end_date' => "required|date|date_format:Y-m-d"
         ];
-
-        // if (request()->route()->getName() == 'project.update') {
-        //     $rules['recipient_id'] = "nullable|integer|exists:members,id";
-        // }
-
-        return $rules;
     }
 }

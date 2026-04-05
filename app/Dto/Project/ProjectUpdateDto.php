@@ -10,7 +10,7 @@ class ProjectUpdateDto extends BaseDto
         public readonly string $order,
         public readonly string $title,
         public readonly string $description,
-        public readonly ?int $recipient_id,
+        public readonly ?int $owner_id,
         public readonly ?int $state,
         public readonly ?bool $active,
         public readonly ?int $type_id,

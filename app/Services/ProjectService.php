@@ -35,9 +35,11 @@ class ProjectService implements ProjectServiceInterface
 
     public function store(ProjectRequest $request): void
     {
+        $userId = auth('sanctum')->user()->id;
         $data = $request->validated();
         $data['code'] = $this->generateCode();
-        $data['owner_id'] = 1;//auth('sanctum')->user()->id;
+        $data['owner_id'] = $userId;
+        $data['created_by'] = $userId;
 
         $this->projectDao->store(
             $this->projectCreateDto::pack($data)

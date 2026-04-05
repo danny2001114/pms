@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('image', 100)->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
-            $table->foreign('leader_id')->on('members')->references('id')->restrictOnDelete();
+            $table->foreign('leader_id')->on('users')->references('id')->restrictOnDelete();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team');
+        Schema::dropIfExists('teams');
     }
 };

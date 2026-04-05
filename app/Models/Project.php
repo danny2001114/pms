@@ -18,13 +18,13 @@ class Project extends Model
         'title',
         'description',
         'owner_id',
-        'recipient_id',
         'state',
         'active',
         'type_id',
         'priority',
         'start_date',
-        'end_date'
+        'end_date',
+        'created_by'
     ];
 
     public const INACTIVE = 0;
@@ -55,11 +55,11 @@ class Project extends Model
     // ========= Relationships ========= //
     function owner(): BelongsTo
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(User::class);
     }
     function recipient(): BelongsTo
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(User::class);
     }
     function type(): BelongsTo
     {
