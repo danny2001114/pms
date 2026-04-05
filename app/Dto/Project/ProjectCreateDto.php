@@ -8,7 +8,6 @@ class ProjectCreateDto extends BaseDto
 {
     public function __construct(
         public readonly string $code,
-        public readonly string $order,
         public readonly string $title,
         public readonly int $owner_id,
         public readonly string $description,

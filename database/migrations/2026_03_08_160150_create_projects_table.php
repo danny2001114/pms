@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('code', 100);
-            $table->integer('order')->unique();
             $table->string('title', 255);
             $table->text('description');
             $table->unsignedBigInteger('owner_id');

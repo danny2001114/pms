@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\Dao\ProjectDaoInterface;
+use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\ProjectServiceInterface;
 use App\Dto\Project\ProjectCreateDto;
 use App\Dto\Project\ProjectUpdateDto;
@@ -15,7 +16,8 @@ class ProjectService implements ProjectServiceInterface
     protected $projectUpdateDto = ProjectUpdateDto::class;
 
     public function __construct(
-        protected ProjectDaoInterface $projectDao
+        protected ProjectDaoInterface $projectDao,
+        protected UserDaoInterface $userDao
     )
     {}
 
@@ -33,7 +35,7 @@ class ProjectService implements ProjectServiceInterface
         return $this->projectDao->getDetail($id);
     }
 
-    public function store(ProjectRequest $request): void
+    public function store(ProjectRequest $request): Project
     {
         $userId = auth('sanctum')->user()->id;
         $data = $request->validated();
@@ -41,15 +43,21 @@ class ProjectService implements ProjectServiceInterface
         $data['owner_id'] = $userId;
         $data['created_by'] = $userId;
 
-        $this->projectDao->store(
+        return $this->projectDao->store(
             $this->projectCreateDto::pack($data)
         );
     }
 
     public function update(ProjectRequest $request, int $id): void
     {
+        $data = $request->validated();
+
+        if ($data['owner_code']) {
+            $data['owner_id'] = $this->userDao->getByAttribute('code', $data['owner_code'])->id;
+        }
+
         $this->projectDao->update($id, 
-            $this->projectUpdateDto::pack($request->validated())
+            $this->projectUpdateDto::pack($data)
         );
     }
 

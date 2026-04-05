@@ -15,12 +15,7 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order' => [
-                "required",
-                "integer",
-                Rule::unique('projects', 'order')->ignore($this->id),
-            ],
-            'owner_id' => "nullable|integer|exists:members,id",
+            'owner_code' => "nullable|string|exists:users,code",
             'title' => "required|string|max:255",
             'description' => "required|string|max:5000",
             'state' => "nullable|integer|in:" . implode(',', config('constants.PROJECT.STATES.ID')),

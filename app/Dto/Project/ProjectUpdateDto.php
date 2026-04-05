@@ -7,7 +7,6 @@ use App\Dto\BaseDto;
 class ProjectUpdateDto extends BaseDto
 {
     public function __construct(
-        public readonly string $order,
         public readonly string $title,
         public readonly string $description,
         public readonly ?int $owner_id,

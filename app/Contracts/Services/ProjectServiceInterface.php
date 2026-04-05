@@ -9,7 +9,7 @@ interface ProjectServiceInterface
 {
     public function getList(): array;
     public function getDetail(int $id): Project;
-    public function store(ProjectRequest $request): void;
+    public function store(ProjectRequest $request): Project;
     public function update(ProjectRequest $request, int $id): void;
     public function delete(int $id): void;
 }

@@ -40,13 +40,13 @@ class ProjectDao implements ProjectDaoInterface
 
     public function getDetail(int $id): Project
     {
-        return $this->project::with(['owner:id,name', 'recipient:id,name', 'type:id,label'])
+        return $this->project::with(['owner:id,name,code', 'recipient:id,name', 'type:id,label'])
                              ->findOrFail($id);
     }
 
-    public function store(array $dto): void
+    public function store(array $dto): Project
     {
-        $this->project::create($dto);
+        return $this->project::create($dto);
     }
 
     public function update(int $id, array $dto): void
@@ -72,7 +72,6 @@ class ProjectDao implements ProjectDaoInterface
         return $query->limit(config('constants.LOAD_LIMIT'))
                      ->orderBy('end_date')
                      ->orderBy('priority')
-                     ->orderBy('order')
                      ->get();
     }
 }

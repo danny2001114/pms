@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Contracts\Services\ProjectServiceInterface;
 use App\Contracts\Services\ProjectTypeServiceInterface;
 use App\Http\Requests\ProjectRequest;
-use App\Models\Project;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -34,20 +33,15 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $request)
     {
-        $this->projectService->store($request);
-        return redirect()->route('project.index');
+        $project = $this->projectService->store($request);
+        if ($project?->id) {
+            return redirect()->route('project.show', $project->id);
+        }
     }
 
     public function show(int $id)
     {
         return Inertia::render("Project/Detail", [
-            "project" => $this->projectService->getDetail($id)
-        ]);
-    }
-
-    public function edit(int $id)
-    {
-        return Inertia::render("Project/Edit", [
             "project" => $this->projectService->getDetail($id),
             ...$this->appendOptions()
         ]);

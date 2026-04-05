@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string("name", 255);
             $table->string("image", 100)->nullable();
+            $table->unsignedBigInteger("main_id")->nullable();
             $table->boolean("active")->default(true);
             $table->timestamps();
+            $table->foreign("main_id")->on("skills")
+                                      ->references("id")
+                                      ->cascadeOnDelete()
+                                      ->restrictOnUpdate();
         });
     }
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('percentage')->default(0);
             $table->date('start_date');
             $table->date('end_date');
+            $table->text('skill_ids')->nullable();
             $table->timestamps();
             $table->foreign('project_id')->on('projects')->references('id')->cascadeOnDelete();
         });
