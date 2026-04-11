@@ -5,10 +5,10 @@ import {
   BRow,
   BCol
 } from 'bootstrap-vue-next';
-import useProjectDetail from '@/Composables/Project/Detail';
 import { useHumanizeStr } from '@/Utilities/helpers';
 import BaseForm from '@/Pages/Project/BaseForm.vue';
 import TaskManage from '@/Pages/Task/Manage.vue';
+import useProjectDetail from '@/Composables/Project/Detail';
 
 // ==== props ==== //
 const props = defineProps({

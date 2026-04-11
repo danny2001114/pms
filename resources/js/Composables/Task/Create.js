@@ -6,15 +6,10 @@ export default function (props) {
     const form = useForm({
         description: '',
         priority: 1,
-        state: 1,
         start_date: new Date().toISOString().split('T')[0],
         end_date: '',
     });
     const fields = {
-        state: {
-            type: 'select',
-            options: useSetOption(props.stateOptions)
-        },
         priority: {
             type: 'select',
             options: useSetOption(props.priorityOptions)

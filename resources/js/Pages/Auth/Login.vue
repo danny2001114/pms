@@ -5,10 +5,15 @@ import {
   BButton
 } from 'bootstrap-vue-next';
 import InfoAlert from '@/Components/InfoAlert.vue';
-import useLogin from '@/Composables/Auth/Login';
 import FormControl from '@/Components/FormControl.vue';
+import useLogin from '@/Composables/Auth/Login';
 
-// === import ==== //
+// ==== options ==== //
+defineOptions({
+  layout: null
+});
+
+// ==== import ==== //
 const {
   form,
   submit

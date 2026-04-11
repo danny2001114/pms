@@ -6,9 +6,9 @@ import {
   BCol,
   BFormGroup
 } from 'bootstrap-vue-next';
-import useProjectTypeManage from '@/Composables/Project/Type/Manage';
 import ScrollableTable from '@/Components/ScrollableTable.vue';
 import FormControl from '@/Components/FormControl.vue';
+import useProjectTypeManage from '@/Composables/Project/Type/Manage';
 
 // === props === //
 defineProps({
