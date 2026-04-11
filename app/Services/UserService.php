@@ -12,9 +12,4 @@ class UserService implements UserServiceInterface
         protected UserDaoInterface $userDao
     )
     {}
-
-    public function getByAttribute(string $attribute, mixed $value): User
-    {
-        return $this->userDao->getByAttribute($attribute, $value);
-    }
 }

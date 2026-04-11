@@ -4,14 +4,14 @@ namespace App\Services;
 
 use App\Contracts\Dao\ProjectTypeDaoInterface;
 use App\Contracts\Services\ProjectTypeServiceInterface;
-use App\Dto\ProjectType\ProjectTypeDto;
-use App\Http\Requests\ProjectTypeRequest;
+use App\Data\ProjectType\ProjectTypeData;
+use App\Http\Requests\ProjectType\ProjectTypeRequest;
 use App\Models\ProjectType;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProjectTypeService implements ProjectTypeServiceInterface
 {
-    protected $projectTypeDto = ProjectTypeDto::class;
+    protected $projectTypeData = ProjectTypeData::class;
 
     public function __construct(
         protected ProjectTypeDaoInterface $projectTypeDao
@@ -26,24 +26,24 @@ class ProjectTypeService implements ProjectTypeServiceInterface
     public function store(ProjectTypeRequest $request): ProjectType
     {
         return $this->projectTypeDao->store(
-            $this->projectTypeDto::pack($request->validated())
+            $this->projectTypeData::from($request->validated())
         );
     }
 
     public function update(ProjectTypeRequest $request, int $id): ProjectType
     {
         return $this->projectTypeDao->update($id,
-            $this->projectTypeDto::pack($request->validated())
+            $this->projectTypeData::from($request->validated())
         );
     }
     
-    public function delete(int $id): int
+    public function destroy(int $id): int
     {
-        return $this->projectTypeDao->delete($id);
+        return $this->projectTypeDao->destroy($id);
     }
 
-    public function getTotalCount(array $filter): int
+    public function count(array $filter): int
     {
-        return $this->projectTypeDao->getTotalCount($filter);
+        return $this->projectTypeDao->count($filter);
     }
 }

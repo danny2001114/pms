@@ -42,31 +42,33 @@ class Project extends Model
         'priority_text'
     ];
 
-    function getStateTextAttribute()
+    protected function getStateTextAttribute()
     {
         return config('constants.PROJECT.STATES.TEXT')[$this->state];
     }
 
-    function getPriorityTextAttribute()
+    protected function getPriorityTextAttribute()
     {
         return config('constants.PROJECT.PRIORITIES.TEXT')[$this->priority];
     }
 
     // ========= Relationships ========= //
-    function owner(): BelongsTo
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    function recipient(): BelongsTo
+    
+    public function recipient(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    function type(): BelongsTo
+
+    public function type(): BelongsTo
     {
         return $this->belongsTo(ProjectType::class);
     }
 
-    function tasks(): HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }

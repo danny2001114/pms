@@ -10,6 +10,7 @@ const variant = ref('success')
 const countDown = ref(0)
 let timer = null
 
+// ==== watcher ==== //
 watch(
   () => [
     page.props.flash?.success,
@@ -31,6 +32,7 @@ watch(
   { immediate: true }
 )
 
+// ==== functions ==== //
 function start(seconds) {
   clearInterval(timer)
 
@@ -52,16 +54,15 @@ function stop() {
   message.value = ''
 }
 
+// ==== event ==== //
 onUnmounted(() => clearInterval(timer))
 </script>
-
 <template>
   <BAlert
-    v-show="show"
+    v-model="show"
     :variant="variant"
     dismissible
-    @dismissed="stop"
-  >
+    @dismissed="stop">
     {{ message }}
   </BAlert>
 </template>

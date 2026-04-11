@@ -1,22 +1,18 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
 import {
   BCard,
-  BFormInput,
   BForm,
-  BFormInvalidFeedback,
   BButton
 } from 'bootstrap-vue-next';
 import InfoAlert from '@/Components/InfoAlert.vue';
+import useLogin from '@/Composables/Auth/Login';
+import FormControl from '@/Components/FormControl.vue';
 
-const form = useForm({
-  code: '',
-  password: ''
-});
-
-const submit = () => {
-  form.post(route('login'));
-}
+// === import ==== //
+const {
+  form,
+  submit
+} = useLogin();
 </script>
 <style scoped>
   .container-fluid {
@@ -31,20 +27,33 @@ const submit = () => {
     <div>
       <InfoAlert class="col-12 col-md-6 col-lg-4 mx-auto" />
       <BCard class="col-12 col-md-6 col-lg-4 mx-auto p-0">
-        <BForm  @submit.prevent="submit" class="d-flex flex-column gap-3">
+        <BForm 
+          @submit.prevent="submit" 
+          class="d-flex flex-column gap-3">
           <div>
-            <BFormInput id="code" v-model="form.code" :state="form.errors.code ? false : null"
-            placeholder="Enter Login Code" />
-            <BFormInvalidFeedback>{{ form.errors.code }}</BFormInvalidFeedback>
+            <FormControl
+              v-model="form.code" 
+              type="text" 
+              field="code" 
+              :group="false"
+              :error="form.errors.code"
+              placeholder="Enter Login Code"/>
           </div>
       
           <div>
-            <BFormInput id="password" v-model="form.password" :state="form.errors.password ? false : null"
-            placeholder="Enter Password" />
-            <BFormInvalidFeedback>{{ form.errors.password }}</BFormInvalidFeedback>
+            <FormControl
+              v-model="form.password" 
+              type="password" 
+              field="password" 
+              :group="false"
+              :error="form.errors.password"
+              placeholder="Enter Password"/>
           </div>
     
-          <BButton type="submit" variant="primary" :disabled="form.processing">
+          <BButton 
+            type="submit" 
+            variant="primary" 
+            :disabled="form.processing">
             Login
           </BButton>
         </BForm>

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Dto\ProjectType;
+namespace App\Data\ProjectType;
 
-use App\Dto\BaseDto;
+use Spatie\LaravelData\Data;
 
-class ProjectTypeDto extends BaseDto
+class ProjectTypeData extends Data
 {
     public function __construct(
         public readonly string $label,
         public readonly ?string $remark,
         public readonly ?bool $active
-    )
-    {}
+    ) {}
 }

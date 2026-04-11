@@ -3,6 +3,7 @@
 namespace App\Dao;
 
 use App\Contracts\Dao\ProjectTypeDaoInterface;
+use App\Data\ProjectType\ProjectTypeData;
 use App\Models\ProjectType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,28 +23,29 @@ class ProjectTypeDao implements ProjectTypeDaoInterface
                     ->get();
     }
 
-    public function store(array $dto): ProjectType
+    public function store(ProjectTypeData $data): ProjectType
     {
-        return $this->projectType::create($dto);
+        return $this->projectType::create($data->toArray());
     }
 
-    public function update(int $id, array $dto): ProjectType
+    public function update(int $id, ProjectTypeData $data): ProjectType
     {
         $model = $this->projectType::findOrFail($id);
-        $model->update($dto);
+        $model->update($data->toArray());
 
         return $model->fresh();
     }
 
-    public function delete(int $id): int
+    public function destroy(int $id): int
     {
         return $this->projectType::findOrFail($id)
-                                    ->delete();
+                                 ->delete();
     }
 
-    public function getTotalCount(array $filter): int
+    public function count(array $filter): int
     {
-        return $this->buildSearchQuery($filter)->count();
+        return $this->buildSearchQuery($filter)
+                    ->count();
     }
 
     protected function buildSearchQuery(array $filter): Builder

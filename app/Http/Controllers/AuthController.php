@@ -7,17 +7,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render(page('Auth.Index'));
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function login(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
@@ -26,9 +24,6 @@ class AuthController extends Controller
         return redirect()->route('dashboard.index');
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function logout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

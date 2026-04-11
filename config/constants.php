@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Project;
+use App\Models\Task;
 
 return [
     'LOAD_LIMIT' => 10,
@@ -22,5 +23,24 @@ return [
             ]
         ],
     ],
-
+    'TASK' => [
+        'STATES' => [
+            'ID' => [Task::PENDING, Task::DEVELOPING, Task::TESTING, Task::FIXING, Task::COMPLETED],
+            'TEXT' => [
+                Task::PENDING => 'Pending',
+                Task::DEVELOPING => 'Developing',
+                Task::TESTING => 'Testing',
+                Task::FIXING => 'Fixing',
+                Task::COMPLETED => 'Completed'
+            ]
+        ],
+        'PRIORITIES' => [
+            'ID' => [Task::PRIORITY_LOW, Task::PRIORITY_MEDIUM, Task::PRIORITY_HIGH],
+            'TEXT' => [
+                Task::PRIORITY_LOW => 'Low',
+                Task::PRIORITY_MEDIUM => 'Medium',
+                Task::PRIORITY_HIGH => 'High'
+            ]
+        ]
+    ],
 ];

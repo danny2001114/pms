@@ -26,4 +26,7 @@ class Task extends Model
     public const TESTING = 3;
     public const FIXING = 4;
     public const COMPLETED = 5;
+    public const PRIORITY_LOW = 1;
+    public const PRIORITY_MEDIUM = 2;
+    public const PRIORITY_HIGH = 3;
 }

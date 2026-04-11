@@ -8,20 +8,36 @@ import {
 import useProjectDetail from '@/Composables/Project/Detail';
 import { useHumanizeStr } from '@/Utilities/helpers';
 import BaseForm from '@/Pages/Project/BaseForm.vue';
+import TaskManage from '@/Pages/Task/Manage.vue';
 
+// ==== props ==== //
 const props = defineProps({
   project: Object,
-  project_type_options: Object,
-  state_options: Object,
-  priority_options: Object,
+  tasks: Object,
+  projectTypeOptions: Object,
+  stateOptions: Object,
+  priorityOptions: Object,
 });
 
-const { form, fields, info, isEdit, edit, submit, back } = useProjectDetail(props);
+// ==== import ==== //
+const { 
+  form, 
+  fields, 
+  info, 
+  isEdit, 
+  edit, 
+  submit, 
+  back 
+} = useProjectDetail(props);
 </script>
 <template>
   <div class="container mt-5" v-if="isEdit">
-    <BaseForm :form="form" :fields="fields" action="Update"
-    @onSubmit="submit" @onBack="back" />
+    <BaseForm 
+      :form="form" 
+      :fields="fields" 
+      action="Update"
+      @onSubmit="submit" 
+      @onBack="back" />
   </div>
   <div class="container mt-5" v-else>
     <BCard>
@@ -31,13 +47,24 @@ const { form, fields, info, isEdit, edit, submit, back } = useProjectDetail(prop
           <BButton @click="edit">Edit</BButton>
         </div>
       </template>
-      <BRow v-for="([label, value]) in Object.entries(info)" :key="label" class="my-2">
+      <BRow 
+        v-for="([label, value]) in Object.entries(info)" 
+        :key="label" class="my-2">
         <BCol cols="2">{{ useHumanizeStr(label) }}</BCol>
         <BCol cols="8">: {{ value }}</BCol>
       </BRow>
       <hr>
-      <b class="mt-3">Description</b>
+      <p class="mt-3">Description</p>
       <p>{{ project.description }}</p>
     </BCard>
+    <div class="my-3">
+      <BButton 
+        variant="outline-secondary" 
+        :href="route('project.index')">Back</BButton>
+    </div>
+    <TaskManage 
+      :projectId="project.id" 
+      :tasks="tasks.data" 
+      :total="tasks.total" />
   </div>
 </template>

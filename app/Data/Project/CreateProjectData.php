@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Dto\Project;
+namespace App\Data\Project;
 
-use App\Dto\BaseDto;
+use Spatie\LaravelData\Data;
 
-class ProjectCreateDto extends BaseDto
+class CreateProjectData extends Data
 {
     public function __construct(
         public readonly string $code,
@@ -16,8 +16,7 @@ class ProjectCreateDto extends BaseDto
         public readonly ?bool $active,
         public readonly ?int $type_id,
         public readonly ?int $priority,
-        public readonly ?string $start_date,
-        public readonly ?string $end_date
-    )
-    {}
+        public readonly string $start_date,
+        public readonly string $end_date
+    ) {}
 }

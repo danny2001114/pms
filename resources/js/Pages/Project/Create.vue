@@ -2,17 +2,28 @@
 import useProjectCreate from '@/Composables/Project/Create';
 import BaseForm from '@/Pages/Project/BaseForm.vue';
 
+// ==== props ==== //
 const props = defineProps({
-  project_type_options: Object,
-  state_options: Object,
-  priority_options: Object,
+  projectTypeOptions: Object,
+  stateOptions: Object,
+  priorityOptions: Object,
 });
 
-const { form, fields, submit, back } = useProjectCreate(props);
+// ==== import ==== //
+const { 
+  form, 
+  fields, 
+  submit, 
+  back 
+} = useProjectCreate(props);
 </script>
 <template>
   <div class="container mt-5">
-    <BaseForm :form="form" :fields="fields" action="Create"
-    @onSubmit="submit" @onBack="back" />
+    <BaseForm 
+      :form="form" 
+      :fields="fields" 
+      action="Create"
+      @onSubmit="submit" 
+      @onBack="back" />
   </div>
 </template>

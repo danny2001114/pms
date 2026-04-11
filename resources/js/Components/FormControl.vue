@@ -10,10 +10,17 @@ import {
 import { useHumanizeStr } from '../Utilities/helpers';
 import { computed } from 'vue';
 
+// ==== porps ==== //
 const props = defineProps({
   modelValue: [String, Number, Boolean],
-  type: String,
-  field: String,
+  type: {
+    type: String,
+    required: true,
+  },
+  field: {
+    type: String,
+    required: true,
+  },
   label: {
     type: String,
     default: ''
@@ -36,7 +43,7 @@ const props = defineProps({
   },
   options: {
     type: Array,
-    default: () => []
+    default: []
   },
   rows: {
     type: Number,
@@ -44,25 +51,20 @@ const props = defineProps({
   }
 });
 
-const errorMessage = computed(() => {
-  let message = props.error;
-
-  if (props.type == 'select' && !props.options.length) {
-    message = "There is no options for " + props.label ?? useHumanizeStr(props.field);
-  }
-  
-  return message;
-});
-
+// ==== emiters ==== //
 const emit = defineEmits(['update:modelValue']);
-</script>
 
+// ==== computors ==== //
+const errorMessage = computed(() => {
+  if (props.type == 'select' && !props.options.length) return "There is no options for " + props.label ?? useHumanizeStr(props.field);
+  else return props.error;
+});
+</script>
 <template>
   <BFormGroup
     v-if="group"
     :label="useHumanizeStr(field)"
-    :label-for="field"
-  >
+    :label-for="field">
     <component
       :is="type === 'select' ? BFormSelect
           : type === 'switch' ? BFormCheckbox
@@ -72,17 +74,14 @@ const emit = defineEmits(['update:modelValue']);
       :model-value="modelValue"
       :options="type === 'select' ? options : undefined"
       :rows="type === 'textarea' ? rows : undefined"
-      :type="type !== 'select' && type !== 'switch' && type !== 'textarea' ? type : undefined"
+      :type="type !== 'select' && type !== 'textarea' ? type === 'switch' ? 'checkbox' : type : undefined"
       :placeholder="placeholder"
       :state="errorMessage ? false : null"
       :disabled="(type == 'select' && !props.options.length)"
       @update:model-value="val => emit('update:modelValue', val)"
-      switch
-    />
-
+      switch/>
     <BFormInvalidFeedback v-if="feedback">{{ errorMessage }}</BFormInvalidFeedback>
   </BFormGroup>
-
   <template v-else>
     <component
       :is="type === 'select' ? BFormSelect
@@ -93,14 +92,12 @@ const emit = defineEmits(['update:modelValue']);
       :model-value="modelValue"
       :options="type === 'select' ? options : undefined"
       :rows="type === 'textarea' ? rows : undefined"
-      :type="type !== 'select' && type !== 'switch' && type !== 'textarea' ? type : undefined"
+      :type="type !== 'select' && type !== 'textarea' ? type === 'switch' ? 'checkbox' : type : undefined"
       :placeholder="placeholder"
       :state="errorMessage ? false : null"
       :disabled="(type == 'select' && !props.options.length)"
       @update:model-value="val => emit('update:modelValue', val)"
-      switch
-    />
-
+      switch/>
     <BFormInvalidFeedback v-if="feedback">{{ errorMessage }}</BFormInvalidFeedback>
   </template>
 </template>
