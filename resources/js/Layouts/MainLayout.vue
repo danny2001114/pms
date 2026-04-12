@@ -13,7 +13,7 @@ function goRoute(url) {
   });
 }
 </script>
-<style>
+<style scoped>
   main {
     width: 100%;
     height: max-content;

@@ -19,7 +19,7 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         );
 
-        page.default.layout = page.default.layout || MainLayout;
+        page.default.layout = name.startsWith('Auth/') ? null : MainLayout;
         return page;
     },
     setup({ el, App, props, plugin }) {

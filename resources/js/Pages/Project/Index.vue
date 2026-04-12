@@ -5,6 +5,7 @@ import {
   BListGroupItem
 } from 'bootstrap-vue-next';
 import useProjectIndex from '@/Composables/Project/Index';
+import { Link, router } from '@inertiajs/vue3';
 
 // ==== props ==== //
 const props = defineProps({
@@ -16,6 +17,12 @@ const {
   destroy 
 } = useProjectIndex();
 </script>
+<style scoped>
+  .list {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
 <template>
   <div class="container mt-5">
     <h1 class="mb-4">Projects</h1>
@@ -23,13 +30,13 @@ const {
       <div class="ms-auto">
         <BButton 
           variant="primary" 
-          :href="route('project.create')" 
+          @click="router.visit(route('project.create'))"
           class="mb-3">
           Create New
         </BButton>
         <BButton 
           variant="warning" 
-          :href="route('project.type.index')" 
+          @click="router.visit(route('project.type.index'))"
           class="mb-3 ms-2">
           Manage Type
         </BButton>
@@ -44,9 +51,13 @@ const {
           <BListGroup>
             <BListGroupItem 
               class="d-flex" v-for="([_, project]) in Object.entries(list)" 
-              :key="project.id" v-if="list.length" 
-              :href="route('project.show', project.id)">
-              {{ project.title }}
+              :key="project.id" v-if="list.length"
+              button>
+              <Link 
+                class="w-100 list"
+                :href="route('project.show', project.id)">
+                {{ project.title }}
+              </Link>
               <BButton 
                 variant="danger" 
                 @click="destroy(project.id)" 

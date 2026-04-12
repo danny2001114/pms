@@ -8,11 +8,6 @@ import InfoAlert from '@/Components/InfoAlert.vue';
 import FormControl from '@/Components/FormControl.vue';
 import useLogin from '@/Composables/Auth/Login';
 
-// ==== options ==== //
-defineOptions({
-  layout: null
-});
-
 // ==== import ==== //
 const {
   form,

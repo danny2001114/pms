@@ -1,21 +1,19 @@
 <script setup>
 import {
-  BButton,
   BListGroup,
   BListGroupItem
 } from 'bootstrap-vue-next';
 import { ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
 
-// === props ==== //
-defineProps({
-  current: String
-});
-
 // ==== vars ==== //
 const nav = [
   { route: "dashboard.index", label: "Dashboard" },
-  { route: "project.index", label: "Project" },
+  { route: "project.index", label: "Project"},
+  { route: "project.index", label: "Setting", sub: [
+    { route: "setting.index", label: "Private"},
+    { route: "setting.general", label: "General"}
+  ] },
 ];
 const width = {
   close: 50,
@@ -43,6 +41,11 @@ watch(show, function (show) {
 const emit = defineEmits([
   "onLink"
 ]);
+
+// ==== actions ==== //
+function logout() {
+  router.delete(route('logout'));
+}
 </script>
 <style>
   #sidebar {
@@ -115,6 +118,11 @@ const emit = defineEmits([
         @click="emit('onLink', item.route)"
         button>
       {{ item.label }}
+    </BListGroupItem>
+    <BListGroupItem 
+      @click="logout" 
+      button>
+      Logout
     </BListGroupItem>
     </BListGroup>
   </div>

@@ -6,11 +6,16 @@ import {
   BCol,
   BForm
 } from 'bootstrap-vue-next';
+import { router } from '@inertiajs/vue3';
 import { useHumanizeStr } from '@/Utilities/helpers';
 import FormControl from '@/Components/FormControl.vue';
 
 // ==== import ==== //
 defineProps({
+  projectId: {
+    type: Number,
+    required: true,
+  },
   form: {
     type: Object,
     required: true,
@@ -62,7 +67,7 @@ const emit = defineEmits([
     <div class="mt-3">
       <BButton 
         variant="outline-secondary" 
-        @click="emit('onBack')" 
+        @click="router.visit(route('project.show', projectId))" 
         class="me-2">
         Back
       </BButton>

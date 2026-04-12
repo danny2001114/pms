@@ -24,7 +24,7 @@ const {
     :form="form" 
     :fields="fields" 
     action="Update"
-    @onSubmit="submit" 
-    @onBack="back" />
+    :project-id="projectId"
+    @onSubmit="submit"/>
   </div>
 </template>

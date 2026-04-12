@@ -21,4 +21,8 @@
             "Create" => "Task/Create",
             "Edit" => "Task/Edit",     
         ],
+        "Setting" => [
+            "Private" => "Setting/Index",
+            "General" => "Setting/General",
+        ]
     ];

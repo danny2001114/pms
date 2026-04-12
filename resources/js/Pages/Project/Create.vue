@@ -13,8 +13,8 @@ const props = defineProps({
 const { 
   form, 
   fields, 
-  submit, 
-  back 
+  submit,
+  back
 } = useProjectCreate(props);
 </script>
 <template>
@@ -23,7 +23,7 @@ const {
       :form="form" 
       :fields="fields" 
       action="Create"
-      @onSubmit="submit" 
-      @onBack="back" />
+      @onSubmit="submit"
+      @onBack="back"/>
   </div>
 </template>

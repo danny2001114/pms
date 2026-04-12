@@ -1,4 +1,4 @@
-import { router, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { useSetOption } from '@/Utilities/helpers';
 
 export default function (props) {
@@ -32,15 +32,10 @@ export default function (props) {
         form.put(route('project.task.update', [props.projectId, props.task.id]));
     }
 
-    function back() {
-        router.visit(route('project.show', props.projectId));
-    }
-
     // ==== export ==== //
     return {
         form,
         fields,
-        submit,
-        back
+        submit
     };
 }

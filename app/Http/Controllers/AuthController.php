@@ -11,8 +11,12 @@ use Inertia\Response;
 
 class AuthController extends Controller
 {
-    public function index(): Response
+    public function index(): RedirectResponse|Response
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard.index');
+        }
+
         return Inertia::render(page('Auth.Index'));
     }
 

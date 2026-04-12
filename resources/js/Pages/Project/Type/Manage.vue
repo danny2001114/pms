@@ -6,6 +6,7 @@ import {
   BCol,
   BFormGroup
 } from 'bootstrap-vue-next';
+import { router } from '@inertiajs/vue3';
 import ScrollableTable from '@/Components/ScrollableTable.vue';
 import FormControl from '@/Components/FormControl.vue';
 import useProjectTypeManage from '@/Composables/Project/Type/Manage';
@@ -120,7 +121,7 @@ const {
       </template>
       </ScrollableTable>
       <div class="text-center mt-3">
-        <BButton :href="route('project.index')">Back</BButton>
+        <BButton @click="router.visit(route('project.index'))">Back</BButton>
       </div>
   </div>
 </template>

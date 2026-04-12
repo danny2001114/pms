@@ -75,7 +75,7 @@ const emit = defineEmits([
     <div class="mt-3">
       <BButton 
         variant="outline-secondary" 
-        @click="emit('onBack')" 
+        @click="emit('onBack')"
         class="me-2">
         Back
       </BButton>

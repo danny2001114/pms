@@ -1,4 +1,4 @@
-import { router, useForm } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 import { useSetOption } from '@/Utilities/helpers';
 
 export default function (props) {
@@ -41,7 +41,7 @@ export default function (props) {
     }
 
     function back() {
-        router.visit(route('project.store'));
+        router.visit(route('project.index'));
     }
 
     // ==== export ==== //

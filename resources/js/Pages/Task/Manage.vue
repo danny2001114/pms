@@ -4,6 +4,7 @@ import {
   BListGroupItem,
   BButton
 } from 'bootstrap-vue-next';
+import { router } from '@inertiajs/vue3';
 import useTaskManage from "@/Composables/Task/Manage"
 
 // ==== props ==== //
@@ -39,7 +40,7 @@ const {
       <BButton 
         class="ms-auto"
         variant="warning" 
-        :href="route('project.task.edit', [projectId, task.id])">
+        @click="router.visit(route('project.task.edit', [projectId, task.id]))">
         Edit
       </BButton>
       <BButton 
@@ -54,6 +55,7 @@ const {
     <BListGroupItem 
       variant="primary" 
       class="text-center" 
-      :href="route('project.task.create', projectId)">Add +</BListGroupItem>
+      @click="router.visit(route('project.task.create', projectId))"
+      button>Add +</BListGroupItem>
   </BListGroup>
 </template>

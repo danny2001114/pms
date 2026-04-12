@@ -5,6 +5,7 @@ import {
   BRow,
   BCol
 } from 'bootstrap-vue-next';
+import { router } from '@inertiajs/vue3';
 import { useHumanizeStr } from '@/Utilities/helpers';
 import BaseForm from '@/Pages/Project/BaseForm.vue';
 import TaskManage from '@/Pages/Task/Manage.vue';
@@ -60,7 +61,7 @@ const {
     <div class="my-3">
       <BButton 
         variant="outline-secondary" 
-        :href="route('project.index')">Back</BButton>
+        @click="router.visit(route('project.index'))">Back</BButton>
     </div>
     <TaskManage 
       :projectId="project.id" 

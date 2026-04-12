@@ -9,7 +9,7 @@ class UpdateProjectData extends Data
     public function __construct(
         public readonly string $title,
         public readonly string $description,
-        public readonly ?int $owner_id,
+        public readonly int $owner_id,
         public readonly ?int $state,
         public readonly ?bool $active,
         public readonly ?int $type_id,

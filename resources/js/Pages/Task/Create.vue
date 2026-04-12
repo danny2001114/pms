@@ -12,8 +12,7 @@ const props = defineProps({
 const { 
   form, 
   fields, 
-  submit, 
-  back 
+  submit
 } = useTaskCreate(props);
 </script>
 <template>
@@ -22,7 +21,7 @@ const {
     :form="form" 
     :fields="fields" 
     action="Create"
-    @onSubmit="submit" 
-    @onBack="back" />
+    :project-id="projectId"
+    @onSubmit="submit"/>
   </div>
 </template>

@@ -57,7 +57,7 @@ class ProjectService implements ProjectServiceInterface
         }
 
         $this->projectDao->update($id, 
-            $this->createProjectData::from($data)
+            $this->updateProjectData::from($data)
         );
     }
 
