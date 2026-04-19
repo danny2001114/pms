@@ -1,6 +1,7 @@
 <script setup>
 import BaseForm from '@/Pages/Task/BaseForm.vue';
-import useTaskCreate from '@/Composables/Task/Create';
+import { useForm } from '@inertiajs/vue3';
+import { useSetOption } from '@/Utilities/helpers';
 
 // ==== props ==== //
 const props = defineProps({
@@ -8,20 +9,30 @@ const props = defineProps({
   priorityOptions: Object,
 });
 
-// ==== import ==== //
-const { 
-  form, 
-  fields, 
-  submit
-} = useTaskCreate(props);
+// ==== form ==== //
+const form = useForm({
+  description: '',
+  priority: 1,
+  start_date: new Date().toISOString().split('T')[0],
+  end_date: '',
+});
+
+// ==== vars ==== //
+const fields = {
+  priority: {
+    type: 'select',
+    options: useSetOption(props.priorityOptions)
+  },
+  start_date: {
+    type: 'date',
+  },
+  end_date: {
+    type: 'date'
+  },
+};
+
 </script>
 <template>
-  <div class="container mt-5">
-    <BaseForm 
-    :form="form" 
-    :fields="fields" 
-    action="Create"
-    :project-id="projectId"
-    @onSubmit="submit"/>
-  </div>
+  <BaseForm :form="form" :fields="fields" action="Create" :project-id="projectId"
+    @onSubmit="form.post(route('project.task.store', projectId))" />
 </template>

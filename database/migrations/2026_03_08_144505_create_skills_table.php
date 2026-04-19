@@ -19,9 +19,9 @@ return new class extends Migration
             $table->boolean("active")->default(true);
             $table->timestamps();
             $table->foreign("main_id")->on("skills")
-                                      ->references("id")
-                                      ->cascadeOnDelete()
-                                      ->restrictOnUpdate();
+                ->references("id")
+                ->cascadeOnDelete()
+                ->restrictOnUpdate();
         });
     }
 

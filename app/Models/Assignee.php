@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Assignee extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'assignees';
     protected $fillable = [
         'task_id',

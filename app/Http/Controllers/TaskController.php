@@ -13,13 +13,9 @@ class TaskController extends Controller
 {
     public function __construct(
         protected TaskServiceInterface $taskService
-    )
-    {}
+    ) {}
 
-    public function index()
-    {
-        
-    }
+    public function index() {}
 
     public function create(int $projectId): Response
     {
@@ -58,9 +54,7 @@ class TaskController extends Controller
 
     public function show(int $id): Response
     {
-        return Inertia::render(page('Task.Detail'), [
-
-        ]);
+        return Inertia::render(page('Task.Detail'), []);
     }
 
     public function change(int $id, Request $request): RedirectResponse

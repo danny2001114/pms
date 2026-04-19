@@ -17,8 +17,7 @@ class ProjectController extends Controller
         protected ProjectServiceInterface $projectService,
         protected ProjectTypeServiceInterface $projectTypeService,
         protected TaskServiceInterface $taskService
-    )
-    {}
+    ) {}
 
     public function index(Request $request): Response
     {
@@ -53,6 +52,14 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function edit(int $id): Response
+    {
+        return Inertia::render(page("Project.Edit"), [
+            "project" => $this->projectService->show($id),
+            ...$this->appendOptions()
+        ]);
+    }
+
     public function update(int $id, ProjectRequest $request): RedirectResponse
     {
         $this->projectService->update($request, $id);
@@ -67,7 +74,7 @@ class ProjectController extends Controller
 
     protected function appendOptions(): array
     {
-        $projectTypes = $this->projectTypeService->getList()->reduce(function ($stack , $type) {
+        $projectTypes = $this->projectTypeService->getList()->reduce(function ($stack, $type) {
             $stack[$type->id] = $type->label;
             return $stack;
         }, []);

@@ -15,8 +15,7 @@ class ProjectTypeService implements ProjectTypeServiceInterface
 
     public function __construct(
         protected ProjectTypeDaoInterface $projectTypeDao
-    )
-    {}
+    ) {}
 
     public function getList(?array $filter = []): Collection
     {
@@ -32,11 +31,12 @@ class ProjectTypeService implements ProjectTypeServiceInterface
 
     public function update(ProjectTypeRequest $request, int $id): ProjectType
     {
-        return $this->projectTypeDao->update($id,
+        return $this->projectTypeDao->update(
+            $id,
             $this->projectTypeData::from($request->validated())
         );
     }
-    
+
     public function destroy(int $id): int
     {
         return $this->projectTypeDao->destroy($id);

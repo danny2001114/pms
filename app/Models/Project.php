@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Project extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'projects';
     protected $fillable = [
         'code',
@@ -38,7 +38,7 @@ class Project extends Model
 
     // ========= Attributes ========= //
     protected $appends = [
-        'state_text', 
+        'state_text',
         'priority_text'
     ];
 
@@ -57,7 +57,7 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(User::class);

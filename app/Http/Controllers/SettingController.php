@@ -9,7 +9,7 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return Inertia::render(page("Setting.Private"));
+        return Inertia::render(page("Setting.Index"));
     }
 
     public function general()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\UserServiceInterface;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,6 +12,10 @@ use Inertia\Response;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        protected UserServiceInterface $userService
+    ) {}
+
     public function index(): RedirectResponse|Response
     {
         if (Auth::check()) {
@@ -22,9 +27,9 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate($this->userService);
         $request->session()->regenerate();
-   
+
         return redirect()->route('dashboard.index');
     }
 

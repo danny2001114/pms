@@ -24,9 +24,9 @@ function goRoute(url) {
   <PageLoading :show="isLoading">
     <div class="d-flex">
       <Aside @onLink="goRoute" />
-        <main>
-          <slot />
-        </main>
+      <main class="container-fluid my-4">
+        <slot />
+      </main>
     </div>
   </PageLoading>
 </template>

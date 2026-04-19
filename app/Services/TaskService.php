@@ -17,8 +17,7 @@ class TaskService implements TaskServiceInterface
     protected $updateTaskData = UpdateTaskData::class;
     public function __construct(
         protected TaskDaoInterface $taskDao
-    )
-    {}
+    ) {}
 
     public function getByProject(int $id): LengthAwarePaginator
     {
@@ -42,7 +41,8 @@ class TaskService implements TaskServiceInterface
 
     public function update(int $id, TaskRequest $request): void
     {
-        $this->taskDao->update($id, 
+        $this->taskDao->update(
+            $id,
             $this->updateTaskData::from($request->validated())
         );
     }

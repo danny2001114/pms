@@ -18,8 +18,7 @@ class ProjectService implements ProjectServiceInterface
     public function __construct(
         protected ProjectDaoInterface $projectDao,
         protected UserDaoInterface $userDao
-    )
-    {}
+    ) {}
 
     public function getList(): array
     {
@@ -56,7 +55,8 @@ class ProjectService implements ProjectServiceInterface
             $data['owner_id'] = $this->userDao->getByAttribute('code', $data['owner_code'])->id;
         }
 
-        $this->projectDao->update($id, 
+        $this->projectDao->update(
+            $id,
             $this->updateProjectData::from($data)
         );
     }

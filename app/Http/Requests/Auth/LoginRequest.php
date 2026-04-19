@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Contracts\Dao\UserDaoInterface;
+use App\Contracts\Services\UserServiceInterface;
+use App\Services\UserService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +30,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string',
-            'password' => 'required|string',
+            'code' => ['required', 'string', 'regex:/^[ALMS][0-9]{5}$/'],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -37,13 +40,10 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(UserServiceInterface $userService): void
     {
         // $this->ensureIsNotRateLimited();
-
-        if (! Auth::attempt($this->only('code', 'password')
-            // , $this->boolean('remember')
-        )) {
+        if (!$userService->attempt($this->only('code', 'password'))) {
             // RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

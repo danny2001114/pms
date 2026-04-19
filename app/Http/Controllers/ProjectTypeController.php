@@ -13,8 +13,7 @@ class ProjectTypeController extends Controller
 {
     public function __construct(
         protected ProjectTypeServiceInterface $projectTypeService
-    )
-    {}
+    ) {}
 
     public function index(Request $request): Response
     {
@@ -24,9 +23,9 @@ class ProjectTypeController extends Controller
 
         return Inertia::render(page("ProjectType.Manage"), [
             "projectTypeList" => $this->projectTypeService
-                                      ->getList($validatedRequest),
+                ->getList($validatedRequest),
             "total"           => $this->projectTypeService
-                                      ->count($validatedRequest)
+                ->count($validatedRequest)
         ]);
     }
 

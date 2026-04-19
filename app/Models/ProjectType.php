@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectType extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'project_types';
     protected $fillable = [
         'label',

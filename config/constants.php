@@ -2,6 +2,7 @@
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\User;
 
 return [
     'LOAD_LIMIT' => 10,
@@ -40,6 +41,33 @@ return [
                 Task::PRIORITY_LOW => 'Low',
                 Task::PRIORITY_MEDIUM => 'Medium',
                 Task::PRIORITY_HIGH => 'High'
+            ]
+        ]
+    ],
+    'USER' => [
+        'ROLES' => [
+            'ID' => [User::MEMBER, User::LEADER, User::ADMIN],
+            'TEXT' => [
+                User::MEMBER => 'Member',
+                User::LEADER => 'Leader',
+                User::ADMIN => 'Admin',
+                User::SUPER => 'Super'
+            ],
+            'OPTIONS' => [
+                ['value' => User::MEMBER, 'text' => 'Member'],
+                ['value' => User::LEADER, 'text' => 'Leader'],
+                ['value' => User::ADMIN, 'text' => 'Admin']
+            ]
+        ],
+        'GENDERS' => [
+            'ID' => [User::MALE, User::FEMALE],
+            'TEXT' => [
+                User::MALE => 'Male',
+                User::FEMALE => 'Female'
+            ],
+           'OPTIONS' => [
+                ['value' => User::MALE, 'text' => 'Male'],
+                ['value' => User::FEMALE, 'text' => 'Female']
             ]
         ]
     ],

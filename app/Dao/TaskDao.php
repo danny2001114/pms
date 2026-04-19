@@ -13,13 +13,12 @@ class TaskDao implements TaskDaoInterface
 {
     public function __construct(
         protected Task $task
-    )
-    {}
+    ) {}
 
     public function getByProject(int $id): LengthAwarePaginator
     {
         return $this->task::where('project_id', $id)
-                          ->paginate();
+            ->paginate();
     }
 
     public function store(CreateTaskData $data): void
@@ -35,18 +34,18 @@ class TaskDao implements TaskDaoInterface
     public function update(int $id, UpdateTaskData $data): void
     {
         $this->task::findOrFail($id)
-                    ->update($data->toArray());
+            ->update($data->toArray());
     }
 
     public function delete($id): void
     {
         $this->task::findOrFail($id)
-                   ->delete();
+            ->delete();
     }
 
     public function countByDate(Carbon $date): int
     {
         return $this->task::whereDate('start_date', $date)
-                          ->count();
+            ->count();
     }
 }
