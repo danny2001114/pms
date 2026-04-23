@@ -7,16 +7,23 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
+/**
+ * handles validations and authorizations for creating or updating user.
+ */
 class UserRequest extends FormRequest
 {
+    /**
+     * rules for user validation
+     * @return array{email: array<string|\Illuminate\Validation\Rules\Unique>, gender: array<string|\Illuminate\Validation\Rules\In>, name: string[], phone: array<string|\Illuminate\Validation\Rules\Unique>, role: array<string|\Illuminate\Validation\Rules\In>}
+     */
     public function rules(): array
     {
         $rules = [
             'name' => ['required', 'string', 'max:100'],
             'role' => ['nullable', 'integer',  Rule::in(config('constants.USER.ROLES.ID'))],
             'gender' => ['required', 'integer', Rule::in(config('constants.USER.GENDERS.ID'))],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id)],
-            'phone' => ['required', 'regex:/^09\d{6,9}$/', Rule::unique('users')->ignore($this->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id)->whereNull('deleted_at')],
+            'phone' => ['required', 'regex:/^09\d{6,9}$/', Rule::unique('users')->ignore($this->id)->whereNull('deleted_at')],
         ];
 
         if (!$this->isUpdate()) {
@@ -35,11 +42,20 @@ class UserRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * determine the route is update or not
+     * @return bool
+     */
     protected function isUpdate(): bool
     {
         return $this->route()->getName() === 'user.update';
     }
     
+    /**
+     * add custom validation after validator
+     * @param Validator $validator
+     * @return void
+     */
     protected function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {

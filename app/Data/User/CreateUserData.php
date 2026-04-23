@@ -4,6 +4,9 @@ namespace App\Data\User;
 
 use Spatie\LaravelData\Data;
 
+/**
+ * Data transfer object for creating user
+ */
 class CreateUserData extends Data
 {
     public function __construct(

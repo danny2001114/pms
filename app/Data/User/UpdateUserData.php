@@ -4,6 +4,9 @@ namespace App\Data\User;
 
 use Spatie\LaravelData\Data;
 
+/**
+ * Data transfer object for updating user
+ */
 class UpdateUserData extends Data
 {
     public function __construct(

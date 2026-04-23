@@ -9,26 +9,50 @@ use App\Data\User\UpdateUserData;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+/**
+ * handles business logic related to user operations
+ */
 class UserService implements UserServiceInterface
 {
-    protected $createUserData = CreateUserData::class;
-    protected $updateUserData = UpdateUserData::class;
+    /**
+     * data transfer object class used for creating user data.
+     * @var string
+     */
+    protected string $createUserData = CreateUserData::class;
 
+    /**
+     * data transfer object class used for updating user data.
+     * @var string
+     */
+    protected string $updateUserData = UpdateUserData::class;
+
+    /**
+     * user service constructor
+     * @param UserDaoInterface $userDao inject the user data access object
+     */
     public function __construct(
         protected UserDaoInterface $userDao
     ) {}
 
+    /**
+     * get user list
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function getList(): Collection
     {
         return $this->userDao->getList();
     }
 
+    /**
+     * store user with validated data
+     * @param UserRequest $request validated user data
+     * @return User|null
+     */
     public function store(UserRequest $request): User|null
     {        
         return DB::transaction(function () use ($request) {
@@ -38,11 +62,22 @@ class UserService implements UserServiceInterface
         });
     }
 
+    /**
+     * get user detail
+     * @param int $id user id
+     * @return User
+     */
     public function show(int $id): User
     {
         return $this->userDao->show($id);
     }
 
+    /**
+     * update user with validated data
+     * @param int $id user id
+     * @param UserRequest $request validated user data
+     * @return void
+     */
     public function update(int $id, UserRequest $request): void
     {
         DB::transaction(function () use ($id, $request) {
@@ -50,6 +85,11 @@ class UserService implements UserServiceInterface
         });
     }
 
+    /**
+     * delete user
+     * @param int $id user id
+     * @return void
+     */
     public function destroy(int $id): void
     {
         DB::transaction(function () use ($id) {
@@ -57,6 +97,11 @@ class UserService implements UserServiceInterface
         });
     }
 
+    /**
+     * check user credentials to database
+     * @param array $credentials user login credentials 
+     * @return bool
+     */
     public function attempt(array $credentials): bool
     {
         foreach (config('constants.USER.ROLES.TEXT') as $roleId => $role) {
@@ -73,6 +118,11 @@ class UserService implements UserServiceInterface
         return false;
     }
 
+    /**
+     * check user is super admin or not
+     * @param int $id user id
+     * @return bool
+     */
     public function isSuperAdmin(int $id): bool
     {
         return $this->userDao->isSuperAdmin($id);

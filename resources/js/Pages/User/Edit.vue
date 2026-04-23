@@ -34,29 +34,33 @@ const form = useForm({
       </template>
 
       <div class="d-flex flex-column gap-3">
-        <BFormGroup label-for="name" label="Name" :state="!form.errors.name">
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="code" label="Code">
+          <input type="text" class="form-control" id="code" disabled :value="user.code"/>
+        </BFormGroup>
+
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="name" label="Name">
           <BFormInput type="text" id="name" name="name" v-model="form.name" />
-          <BFormInvalidFeedback>{{ form.errors.name }}</BFormInvalidFeedback>
+          <div class="text-danger" v-if="form.errors.name">{{ form.errors.name }}</div>
         </BFormGroup>
 
-        <BFormGroup label="Role">
-          <BFormRadioGroup :options="roles" id="role" name="role" v-model="form.role" :state="!form.errors.role" />
-          <BFormInvalidFeedback :state="!form.errors.role">{{ form.errors.role }}</BFormInvalidFeedback>
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label="Role">
+          <BFormRadioGroup :options="roles" id="role" name="role" v-model="form.role" />
+          <div class="text-danger" v-if="form.errors.role">{{ form.errors.role }}</div>
         </BFormGroup>
 
-        <BFormGroup label="Gender">
-          <BFormRadioGroup :options="genders" id="gender" name="gender" v-model="form.gender" :state="!form.errors.gender" />
-          <BFormInvalidFeedback :state="!form.errors.genders">{{ form.errors.gender }}</BFormInvalidFeedback>
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label="Gender">
+          <BFormRadioGroup :options="genders" id="gender" name="gender" v-model="form.gender" />
+          <div class="text-danger" v-if="form.errors.gender">{{ form.errors.gender }}</div>
         </BFormGroup>
 
-        <BFormGroup label-for="email" label="Email" :state="!form.errors.email">
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="email" label="Email">
           <BFormInput type="email" id="email" name="email" v-model="form.email" />
-          <BFormInvalidFeedback>{{ form.errors.email }}</BFormInvalidFeedback>
+          <div class="text-danger" v-if="form.errors.email">{{ form.errors.email }}</div>
         </BFormGroup>
 
-        <BFormGroup label-for="phone" label="Phone" :state="!form.errors.phone">
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="phone" label="Phone">
           <BFormInput type="tel" id="phone" name="phone" v-model="form.phone" />
-          <BFormInvalidFeedback>{{ form.errors.phone }}</BFormInvalidFeedback>
+          <div class="text-danger" v-if="form.errors.phone">{{ form.errors.phone }}</div>
         </BFormGroup>
       </div>
     </BCard>

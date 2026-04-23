@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('password', 60);
             $table->string('name', 100);
-            $table->string("email", 100)->nullable()->unique();
-            $table->string("phone", 11)->nullable()->unique();
+            $table->string("email", 100)->nullable();
+            $table->string("phone", 11)->nullable();
             $table->tinyInteger('role')->default(1)->comment("1: member, 2: leader, 3: admin, 4: super");
             $table->tinyInteger("gender")->nullable()->comment("1: male, 2: female");
             $table->date("birthday")->nullable();
