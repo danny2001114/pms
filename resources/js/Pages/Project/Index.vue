@@ -4,36 +4,30 @@ import {
   BListGroup,
   BListGroupItem
 } from 'bootstrap-vue-next';
-import { Link, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
-  projectLists: Object
+  projects: Object
 });
-
-function destroy(projectId, id) {
-  if (confirm('Are you sure you want to delete this project?')) {
-    router.delete(route('project.destroy', [projectId, id]));
-  }
-}
 </script>
 <template>
   <div class="d-flex align-items-center">
     <h3>Project List</h3>
-    <BButton class="ms-auto" variant="primary" @click="router.visit(route('project.create'))">
+    <BButton class="ms-auto" size="sm" variant="primary" @click="router.visit(route('project.create'))">
       Add
     </BButton>
   </div>
   <hr>
 
   <div class="row">
-    <template v-for="([type, list]) in Object.entries(projectLists)" :key="type">
+    <template v-for="([type, list]) in Object.entries(projects)" :key="type">
       <div class="col-4">
-        <h6>{{ type }}</h6>
+        <h5 class="text-center mb-3">{{ type }}</h5>
         <BListGroup>
-          <BListGroupItem class="d-flex" v-for="([_, project]) in Object.entries(list)" :key="project.id"
-            v-if="list.length" @click="router.visit(route('project.show', project.id))" button>
+          <BListGroupItem class="d-flex" v-for="project in list.data" :key="project.id"
+            v-if="list.data.length" @click="router.visit(route('project.show', project.id))" button>
             {{ project.title }}
-            <BButton variant="danger" @click.stop="destroy(project.id)" class="ms-auto">
+            <BButton variant="danger" @click.stop="router.delete(route('project.destroy', project.id))" class="ms-auto">
               Delete
             </BButton>
           </BListGroupItem>

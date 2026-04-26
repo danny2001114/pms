@@ -21,8 +21,8 @@ const fields = [
 </script>
 <template>
   <div class="d-flex align-items-center">
-    <h3>User List</h3>
-    <BButton class="ms-auto" variant="primary" @click="router.visit(route('user.create'))">
+    <h3 class="m-0">User List</h3>
+    <BButton class="ms-auto" variant="primary" size="sm" @click="router.visit(route('user.create'))">
       Add
     </BButton>
   </div>

@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * store user
+     * store user and redirect to detail page if success
      * @param UserRequest $request validated user request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -66,7 +66,7 @@ class UserController extends Controller
     public function show(int $id): Response
     {
         return Inertia::render(page('User.Detail'), [
-            "user" => $this->userService->show($id)
+            "user" => $this->userService->getDetail($id)
         ]);
     }
 
@@ -83,13 +83,13 @@ class UserController extends Controller
         }
 
         return Inertia::render(page('User.Edit'), [
-            "user" => $this->userService->show($id),
+            "user" => $this->userService->getDetail($id),
             ...$this->appendOptions()
         ]);
     }
 
     /**
-     * update user
+     * update user and redirect to  previous page
      * @param int $id user id
      * @param UserRequest $request validated user request
      * @return \Illuminate\Http\RedirectResponse
@@ -97,7 +97,7 @@ class UserController extends Controller
     public function update(int $id, UserRequest $request): RedirectResponse
     {
         $this->userService->update($id, $request);
-        return redirect()->route('user.show', $id);
+        return redirect()->back();
     }
 
     /**
@@ -107,7 +107,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
-        $this->userService->destroy($id);
+        $this->userService->delete($id);
         return redirect()->route('user.index');
     }
 
@@ -121,7 +121,7 @@ class UserController extends Controller
     }
 
     /**
-     * to append form options to user form pages
+     * append form options to user form pages
      * @return array{roles: array, genders: array}
      */
     protected function appendOptions(): array

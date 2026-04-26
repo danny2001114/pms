@@ -40,8 +40,7 @@ class UserService implements UserServiceInterface
     ) {}
 
     /**
-     * get user list
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @inheritDoc
      */
     public function getList(): Collection
     {
@@ -49,34 +48,28 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * store user with validated data
-     * @param UserRequest $request validated user data
-     * @return User|null
+     * @inheritDoc
      */
-    public function store(UserRequest $request): User|null
-    {        
-        return DB::transaction(function () use ($request) {
-            $data = $request->validated();
-            $data['password'] = Hash::make($data['password']);
+    public function store(UserRequest $request): User
+    {
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+
+        return DB::transaction(function () use ($data) {
             return $this->userDao->store($this->createUserData::from($data));
         });
     }
 
     /**
-     * get user detail
-     * @param int $id user id
-     * @return User
+     * @inheritDoc
      */
-    public function show(int $id): User
+    public function getDetail(int $id): User
     {
-        return $this->userDao->show($id);
+        return $this->userDao->getDetail($id);
     }
 
     /**
-     * update user with validated data
-     * @param int $id user id
-     * @param UserRequest $request validated user data
-     * @return void
+     * @inheritDoc
      */
     public function update(int $id, UserRequest $request): void
     {
@@ -86,45 +79,48 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * delete user
-     * @param int $id user id
-     * @return void
+     * @inheritDoc
      */
-    public function destroy(int $id): void
+    public function delete(int $id): void
     {
         DB::transaction(function () use ($id) {
-            $this->userDao->destroy($id);
+            $this->userDao->delete($id);
         });
     }
 
     /**
-     * check user credentials to database
-     * @param array $credentials user login credentials 
-     * @return bool
+     * @inheritDoc
      */
     public function attempt(array $credentials): bool
     {
-        foreach (config('constants.USER.ROLES.TEXT') as $roleId => $role) {
-            if ($role[0] === $credentials['code'][0]) {
-                $id = (int) Str::substr($credentials['code'], 2);
-                return Auth::attempt([
-                    'id' => $id,
-                    'role' => $roleId,
-                    'password' => $credentials['password']
-                ]);
-            }
-        }
-
-        return false;
+        return Auth::attempt([
+            ...$this->extractCode($credentials['code']),
+            'password' => $credentials['password']
+        ]);
     }
 
     /**
-     * check user is super admin or not
-     * @param int $id user id
-     * @return bool
+     * @inheritDoc
      */
     public function isSuperAdmin(int $id): bool
     {
         return $this->userDao->isSuperAdmin($id);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function extractCode(?string $code = null): array
+    {
+        if ($code) {
+            foreach (config('constants.USER.ROLES.TEXT') as $roleId => $role) {
+                if ($role[0] === $code[0]) {
+                    $id = (int) Str::substr($code, 2);
+                    return ["id" =>  $id, "role" =>  $roleId];
+                }
+            }
+        }
+
+        return ["id" => null, "role" => null];
     }
 }

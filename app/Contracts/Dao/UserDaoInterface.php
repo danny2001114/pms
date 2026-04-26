@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * define the contract fpr user data access onject
+ * define the contract for user data access object
  */
 interface UserDaoInterface
 {
@@ -28,10 +28,11 @@ interface UserDaoInterface
      * @param int $id user id
      * @return User
      */
-    public function show(int $id): User;
+    public function getDetail(int $id): User;
     /**
      * update user data from data transfer object of user updating
-     * @param int $id data transfer object class used for updating user data
+     * @param int $id user id
+     * @param UpdateUserData $data data transfer object class used for updating user data
      * @return void
      */
     public function update(int $id, UpdateUserData $data): void;
@@ -40,7 +41,7 @@ interface UserDaoInterface
      * @param int $id user id
      * @return void
      */
-    public function destroy(int $id): void;
+    public function delete(int $id): void;
     /**
      * serach user by column name
      * @param string $attribute table column name

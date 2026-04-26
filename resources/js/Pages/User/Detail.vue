@@ -10,18 +10,22 @@ import { router } from '@inertiajs/vue3';
 const props = defineProps({
   user: Object
 });
-
 </script>
 <template>
+  <h3 class="m-0">User Detail</h3>
+  <hr>
+
   <BCard>
     <template #header>
-      <h3>User Detail</h3>
+      <div class="d-flex align-items-center">
+        <h3>{{ user.name }}</h3>
+        <BButton class="ms-auto" variant="primary" size="sm" @click="router.visit(route('user.edit', user.id))"
+          v-if="user.role !== 4">
+          Edit
+        </BButton>
+      </div>
     </template>
 
-    <BRow class="my-2">
-      <BCol cols="2">Name</BCol>
-      <BCol cols="8">: {{ user.name }}</BCol>
-    </BRow>
     <BRow class="my-2">
       <BCol cols="2">Code</BCol>
       <BCol cols="8">: {{ user.code }}</BCol>

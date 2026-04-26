@@ -5,63 +5,96 @@ namespace App\Services;
 use App\Contracts\Dao\TeamDaoInterface;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\TeamServiceInterface;
+use App\Contracts\Services\UserServiceInterface;
 use App\Data\Team\UpdateTeamData;
 use App\Data\Team\CreateTeamData;
 use App\Http\Requests\Team\TeamRequest;
 use App\Models\Team;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * handles business logic related to team operations
+ */
 class TeamService implements TeamServiceInterface
 {
-    protected $createTeamData = CreateTeamData::class;
-    protected $updateTeamData = UpdateTeamData::class;
+    /**
+     * data transfer object class used for creating team data.
+     * @var string
+     */
+    protected string $createTeamData = CreateTeamData::class;
 
+    /**
+     * data transfer object class used for updating user data.
+     * @var string
+     */
+    protected string $updateTeamData = UpdateTeamData::class;
+
+    /**
+     * team service constructor
+     * @param TeamDaoInterface $teamDao inject the team data access object
+     * @param UserDaoInterface $userDao inject the user data access object
+     * @param UserServiceInterface $userService inject the user service
+     */
     public function __construct(
         protected TeamDaoInterface $teamDao,
-        protected UserDaoInterface $userDao
+        protected UserDaoInterface $userDao,
+        protected UserServiceInterface $userService
     ) {}
 
-    public function getList(): Collection
+    /**
+     * @inheritDoc
+     */
+    public function getList(): LengthAwarePaginator
     {
         return $this->teamDao->getList();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function store(TeamRequest $request): Team
     {
         $data = $request->validated();
-
         if ($data['leader_code']) {
-            $data['leader_id'] = $this->userDao->getByAttribute('code', $data['leader_code'])->id;
+            $data['leader_id'] = $this->userService->extractCode($data['leader_code'])['id'];
         }
 
-        return $this->teamDao->store(
-            $this->createTeamData::from($data)
-        );
+        return DB::transaction(function () use ($data) {
+            return $this->teamDao->store($this->createTeamData::from($data));
+        });
     }
 
-    public function show(int $id): Team
+    /**
+     * @inheritDoc
+     */
+    public function getDetail(int $id): Team
     {
-        return $this->teamDao->show($id);
+        return $this->teamDao->getDetail($id);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function update(int $id, TeamRequest $request): void
     {
         $data = $request->validated();
-        $data['leader_id'] = $request->leader_id;
+        if ($data['leader_code']) {
+            $data['leader_id'] = $this->userService->extractCode($data['leader_code'])['id'];
+        }
 
-        $this->teamDao->update(
-            $id,
-            $this->updateTeamData::from($data)
-        );
+        DB::transaction(function () use ($id, $data) {
+            $this->teamDao->update($id, $this->updateTeamData::from($data));
+        });
     }
 
-    public function destroy(int $id): void
+    /**
+     * @inheritDoc
+     */
+    public function delete(int $id): void
     {
-        $this->teamDao->destroy($id);
-    }
-
-    public function count(): int
-    {
-        return $this->teamDao->count();
+        DB::transaction(function () use ($id) {
+            $this->teamDao->delete($id);
+        });
     }
 }

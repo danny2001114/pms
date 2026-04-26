@@ -13,6 +13,11 @@ return [
                 Project::DEVELOP => 'Develop',
                 Project::MAINTAIN => 'Maintain',
                 Project::FEATURE => 'Feature'
+            ],
+            'OPTIONS' => [
+                ['value' => Project::DEVELOP, 'text' => 'Develop'],
+                ['value' => Project::MAINTAIN, 'text' => 'Maintain'],
+                ['value' => Project::FEATURE, 'text' => 'Feature']
             ]
         ],
         'PRIORITIES' => [
@@ -21,8 +26,13 @@ return [
                 Project::PRIORITY_LOW => 'Low',
                 Project::PRIORITY_MEDIUM => 'Medium',
                 Project::PRIORITY_HIGH => 'High'
+            ],
+            'OPTIONS' => [
+                ['value' => Project::PRIORITY_LOW, 'text' => 'Low'],
+                ['value' => Project::PRIORITY_MEDIUM, 'text' => 'Medium'],
+                ['value' => Project::PRIORITY_HIGH, 'text' => 'High']
             ]
-        ],
+        ]
     ],
     'TASK' => [
         'STATES' => [
@@ -65,7 +75,7 @@ return [
                 User::MALE => 'Male',
                 User::FEMALE => 'Female'
             ],
-           'OPTIONS' => [
+            'OPTIONS' => [
                 ['value' => User::MALE, 'text' => 'Male'],
                 ['value' => User::FEMALE, 'text' => 'Female']
             ]

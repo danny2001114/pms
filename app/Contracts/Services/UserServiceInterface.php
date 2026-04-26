@@ -19,15 +19,15 @@ interface UserServiceInterface
     /**
      * store user with validated data
      * @param UserRequest $request validated user data
-     * @return User|null
+     * @return User
      */
-    public function store(UserRequest $request): User|null;
+    public function store(UserRequest $request): User;
     /**
      * get user detail
      * @param int $id user id
      * @return User
      */
-    public function show(int $id): User;
+    public function getDetail(int $id): User;
     /**
      * update user with validated data
      * @param int $id user id
@@ -40,7 +40,7 @@ interface UserServiceInterface
      * @param int $id user id
      * @return void
      */
-    public function destroy(int $id): void;
+    public function delete(int $id): void;
     /**
      * check user credentials to database
      * @param array $credentials user login credentials 
@@ -53,4 +53,10 @@ interface UserServiceInterface
      * @return bool
      */
     public function isSuperAdmin(int $id): bool;
+    /**
+     * extract id and role from code
+     * @param string|null $code user code
+     * @return array{id: int, role: int}
+     */
+    public function extractCode(?string $code = null): array;
 }

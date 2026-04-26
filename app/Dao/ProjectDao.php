@@ -9,15 +9,25 @@ use App\Models\Project;
 use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * handles data access to projects db
+ */
 class ProjectDao implements ProjectDaoInterface
 {
+    /**
+     * project dao constructor
+     * @param Project $project inject the project model
+     */
     public function __construct(
         protected Project $project
     ) {}
 
-    public function getPending(): Collection
+    /**
+     * @inheritDoc
+     */
+    public function getPending(): LengthAwarePaginator
     {
         $pending = $this->project::whereDoesntHave(
             'tasks',
@@ -27,7 +37,10 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($pending);
     }
 
-    public function getProcessing(): Collection
+    /**
+     * @inheritDoc
+     */
+    public function getProcessing(): LengthAwarePaginator
     {
         $processing = $this->project::whereHas(
             'tasks',
@@ -37,7 +50,10 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($processing);
     }
 
-    public function getCompleted(): Collection
+    /**
+     * @inheritDoc
+     */
+    public function getCompleted(): LengthAwarePaginator
     {
         $completed = $this->project::whereDoesntHave(
             'tasks',
@@ -48,44 +64,64 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($completed);
     }
 
-    public function show(int $id): Project
+    /**
+     * @inheritDoc
+     */
+    public function getDetail(int $id): Project
     {
         return $this->project::with([
-            'owner:id,name,code',
+            'owner:id,name,role',
             'recipient:id,name',
             'type:id,label',
         ])
             ->findOrFail($id);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function store(CreateProjectData $data): Project
     {
         return $this->project::create($data->toArray());
     }
 
+    /**
+     * @inheritDoc
+     */
     public function update(int $id, UpdateProjectData $data): void
     {
         $this->project::findOrFail($id)
             ->update($data->toArray());
     }
 
-    public function destroy(int $id): void
+    /**
+     * @inheritDoc
+     */
+    public function delete(int $id): void
     {
         $this->project::findOrFail($id)
             ->delete();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function countByDate(Carbon $date): int
     {
         return $this->project::whereDate('created_at', $date)
             ->count();
     }
 
-    protected function getProject(Builder|Project $query): Collection
+    /**
+     * build common project query with pagination
+     * @param \Illuminate\Contracts\Database\Eloquent\Builder|Project $query
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    protected function getProject(Builder|Project $query): LengthAwarePaginator
     {
         return $query->limit(config('constants.LOAD_LIMIT'))
             ->orderBy('end_date')
             ->orderBy('priority')
-            ->get();
+            ->paginate();
     }
 }

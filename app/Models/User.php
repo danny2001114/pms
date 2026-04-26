@@ -41,16 +41,19 @@ class User extends Authenticatable
 
     protected function getRoleTextAttribute()
     {
+        if (!$this->role) return null;
         return config('constants.USER.ROLES.TEXT')[$this->role];
     }
 
     protected function getGenderTextAttribute()
     {
+        if (!$this->gender) return null;
         return config('constants.USER.GENDERS.TEXT')[$this->gender] ?? null;
     }
 
     protected function getCodeAttribute()
     {
+         if (!$this->role) return null;
         $role = config('constants.USER.ROLES.TEXT')[$this->role][0];
         $id = sprintf("%05d", $this->id);
         return $role . $id;

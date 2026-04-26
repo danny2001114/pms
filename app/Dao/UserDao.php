@@ -22,8 +22,7 @@ class UserDao implements UserDaoInterface
     ) {}
 
     /**
-     * get user list
-     * @return Collection<int, User>|\Illuminate\Support\Collection<int, \stdClass>
+     * @inheritDoc
      */
     public function getList(): Collection
     {
@@ -31,9 +30,7 @@ class UserDao implements UserDaoInterface
     }
 
     /**
-     * store user data from data transfer object of user creating
-     * @param CreateUserData $data data transfer object class used for creating user data
-     * @return User
+     * @inheritDoc
      */
     public function store(CreateUserData $data): User|null
     {
@@ -41,19 +38,15 @@ class UserDao implements UserDaoInterface
     }
 
     /**
-     * get user detail
-     * @param int $id user id
-     * @return User
+     * @inheritDoc
      */
-    public function show(int $id): User
+    public function getDetail(int $id): User
     {
         return $this->user::findOrFail($id);
     }
 
     /**
-     * update user data from data transfer object of user updating
-     * @param int $id data transfer object class used for updating user data
-     * @return void
+     * @inheritDoc
      */
     public function update(int $id, UpdateUserData $data): void
     {
@@ -61,20 +54,15 @@ class UserDao implements UserDaoInterface
     }
 
     /**
-     * delete user
-     * @param int $id user id
-     * @return void
+     * @inheritDoc
      */
-    public function destroy(int $id): void
+    public function delete(int $id): void
     {
         $this->user::findOrFail($id)->delete();
     }
 
     /**
-     * serach user by column name
-     * @param string $attribute table column name
-     * @param mixed $value column value
-     * @return object|User|null
+     * @inheritDoc
      */
     public function getByAttribute(string $attribute, mixed $value): User
     {
@@ -83,9 +71,7 @@ class UserDao implements UserDaoInterface
     }
 
     /**
-     * check is super admin or not
-     * @param int $id user id
-     * @return bool
+     * @inheritDoc
      */
     public function isSuperAdmin(int $id): bool
     {

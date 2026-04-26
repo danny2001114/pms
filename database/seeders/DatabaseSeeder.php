@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,6 +20,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123456'),
             'name' => 'Super Admin',
             'role' => 4,
+        ]);
+
+        ProjectType::insert([
+            ["label" => "Ecommerce"],
+            ["label" => "Game"],
+            ["label" => "System"]
         ]);
     }
 }

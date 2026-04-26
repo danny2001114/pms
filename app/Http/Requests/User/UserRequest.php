@@ -41,15 +41,6 @@ class UserRequest extends FormRequest
 
         return $rules;
     }
-
-    /**
-     * determine the route is update or not
-     * @return bool
-     */
-    protected function isUpdate(): bool
-    {
-        return $this->route()->getName() === 'user.update';
-    }
     
     /**
      * add custom validation after validator
@@ -66,5 +57,14 @@ class UserRequest extends FormRequest
                 $validator->errors()->add('failed', "Super Admin can't be update.");
             }
         });
+    }
+
+    /**
+     * determine the current route is update or not
+     * @return bool
+     */
+    protected function isUpdate(): bool
+    {
+        return $this->route()->getName() === 'user.update';
     }
 }

@@ -1,3 +1,5 @@
+import { router } from "@inertiajs/vue3";
+
 export function usePatch(list, incoming) {
   const id = incoming.id;
   const i = list.value.findIndex((row) => Number(row.id) === Number(id));
@@ -30,4 +32,12 @@ export function useHumanizeStr(str) {
             .toLowerCase()
             .replace(/\b\w/g, c => c.toUpperCase())
             .trim();
+}
+
+export function back() {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    router.visit(route('dashbaord.index'));
+  }
 }

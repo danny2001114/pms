@@ -6,37 +6,50 @@ import {
   BCol
 } from 'bootstrap-vue-next';
 import { router } from '@inertiajs/vue3';
-import { useHumanizeStr } from '@/Utilities/helpers';
-import TaskManage from '@/Pages/Task/Manage.vue';
 
-// ==== props ==== //
 const props = defineProps({
-  project: Object,
-  tasks: Object
+  project: Object
 });
-
-// ==== computors ==== //
-const info = {
-  code: props.project.code,
-  owner: props.project.owner.name + `(${props.project.owner.code})`,
-  state: props.project.state_text,
-  type: props.project.type.label,
-  priority: props.project.priority_text,
-  start_date: props.project.start_date,
-  end_date: props.project.end_date,
-};
 </script>
 <template>
+  <h3 class="m-0">Project Detail</h3>
+  <hr>
   <BCard>
     <template #header>
-      <div class="d-flex justify-content-between">
-        <h3>{{ project.title }}</h3>
-        <BButton @click="router.visit(route('project.edit', project.id))">Edit</BButton>
+      <div class="d-flex align-items-center">
+        <h3>{{ project.name }}</h3>
+        <BButton class="ms-auto" variant="primary" size="sm" @click="router.visit(route('project.edit', project.id))">
+          Edit</BButton>
       </div>
     </template>
-    <BRow v-for="([label, value]) in Object.entries(info)" :key="label" class="my-2">
-      <BCol cols="2">{{ useHumanizeStr(label) }}</BCol>
-      <BCol cols="8">: {{ value }}</BCol>
+
+    <BRow class="my-2">
+      <BCol cols="2">Code</BCol>
+      <BCol cols="8">: {{ project.code }}</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">Owner</BCol>
+      <BCol cols="8">: {{ project.owner.name }}({{ project.owner.code }})</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">Type</BCol>
+      <BCol cols="8">: {{ project.type.label }}</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">State</BCol>
+      <BCol cols="8">: {{ project.state_text }}</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">State</BCol>
+      <BCol cols="8">: {{ project.priority_text }}</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">Start Date</BCol>
+      <BCol cols="8">: {{ project.start_date }}</BCol>
+    </BRow>
+    <BRow class="my-2">
+      <BCol cols="2">End Date</BCol>
+      <BCol cols="8">: {{ project.end_date }}</BCol>
     </BRow>
     <hr>
     <p class="mt-3">Description</p>
@@ -45,6 +58,4 @@ const info = {
   <div class="my-3">
     <BButton variant="outline-secondary" @click="router.visit(route('project.index'))">Back</BButton>
   </div>
-
-  <TaskManage :projectId="project.id" :tasks="tasks.data" :total="tasks.total" />
 </template>
