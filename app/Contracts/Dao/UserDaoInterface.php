@@ -55,4 +55,11 @@ interface UserDaoInterface
      * @return bool
      */
     public function isSuperAdmin(int $id): bool;
+    /**
+     * check is user must be existing and not in any team
+     * @param int $id
+     * @param int $role
+     * @return bool
+     */
+    public function isValidUser(int $id, int $role): bool;
 }

@@ -4,6 +4,7 @@ namespace App\Contracts\Services;
 
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -59,4 +60,11 @@ interface UserServiceInterface
      * @return array{id: int, role: int}
      */
     public function extractCode(?string $code = null): array;
+    /**
+     * check is user must be existing and not in any team
+     * @param int $id
+     * @param int $role
+     * @return bool
+     */
+    public function isValidUser(int $id, int $role): bool;
 }

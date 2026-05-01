@@ -14,7 +14,7 @@ return [
         "Detail" => "Project/Detail"
     ],
     "ProjectType" => [
-        "Manage" => "Project/Type/Manage",
+        "Index" => "ProjectType/Index",
     ],
     "Setting" => [
         "Index" => "Setting/Index",

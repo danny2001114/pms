@@ -5,49 +5,22 @@ namespace App\Dao;
 use App\Contracts\Dao\ProjectTypeDaoInterface;
 use App\Data\ProjectType\ProjectTypeData;
 use App\Models\ProjectType;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * handles data access to project_types db
+ */
 class ProjectTypeDao implements ProjectTypeDaoInterface
 {
+    /**
+     * project type dao construct
+     * @param ProjectType $projectType inject the project type model
+     */
     public function __construct(
         protected ProjectType $projectType
     ) {}
 
-    public function getList(array $filter): Collection
-    {
-        return $this->buildSearchQuery($filter)
-            ->orderByDesc("id")
-            ->limit(config("constants.LOAD_LIMIT"))
-            ->get();
-    }
-
-    public function store(ProjectTypeData $data): ProjectType
-    {
-        return $this->projectType::create($data->toArray());
-    }
-
-    public function update(int $id, ProjectTypeData $data): ProjectType
-    {
-        $model = $this->projectType::findOrFail($id);
-        $model->update($data->toArray());
-
-        return $model->fresh();
-    }
-
-    public function destroy(int $id): int
-    {
-        return $this->projectType::findOrFail($id)
-            ->delete();
-    }
-
-    public function count(array $filter): int
-    {
-        return $this->buildSearchQuery($filter)
-            ->count();
-    }
-
-    protected function buildSearchQuery(array $filter): Builder
+    public function getList(array $filter): LengthAwarePaginator
     {
         return $this->projectType::when(
             $filter['label'] ?? null,
@@ -56,6 +29,25 @@ class ProjectTypeDao implements ProjectTypeDaoInterface
             ->when(
                 is_bool($filter['active'] ?? null),
                 fn($query) => $query->where('active', $filter['active'])
-            );
+            )
+            ->orderByDesc("id")
+            ->paginate();
+    }
+
+    public function store(ProjectTypeData $data): void
+    {
+        $this->projectType::create($data->toArray());
+    }
+
+    public function update(int $id, ProjectTypeData $data): void
+    {
+        $this->projectType::findOrFail($id)
+            ->update($data->toArray());
+    }
+
+    public function destroy(int $id): void
+    {
+        $this->projectType::findOrFail($id)
+            ->delete();
     }
 }

@@ -94,7 +94,7 @@ class ProjectController extends Controller
     /**
      * update project and redirect to  previous page
      * @param int $id
-     * @param ProjectRequest $request
+     * @param ProjectRequest $request validated project request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(int $id, ProjectRequest $request): RedirectResponse

@@ -13,13 +13,13 @@ use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
 /**
- * handles business logic related to user operations
+ * handles business logic related to project operations
  */
 class ProjectService implements ProjectServiceInterface
 {
     /**
      * data transfer object class used for creating project data.
-     * @var 
+     * @var string
      */
     protected string $createProjectData = CreateProjectData::class;
 

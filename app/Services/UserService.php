@@ -8,6 +8,7 @@ use App\Data\User\CreateUserData;
 use App\Data\User\UpdateUserData;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -122,5 +123,10 @@ class UserService implements UserServiceInterface
         }
 
         return ["id" => null, "role" => null];
+    }
+
+    public function isValidUser(int $id, int $role): bool
+    {
+        return $this->userDao->isValidUser($id, $role);
     }
 }

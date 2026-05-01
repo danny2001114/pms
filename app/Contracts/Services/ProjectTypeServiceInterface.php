@@ -3,14 +3,36 @@
 namespace App\Contracts\Services;
 
 use App\Http\Requests\ProjectType\ProjectTypeRequest;
-use App\Models\ProjectType;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
+/**
+ * defines the contract for project type related business logic
+ */
 interface ProjectTypeServiceInterface
 {
-    public function getList(?array $filter = []): Collection;
-    public function store(ProjectTypeRequest $request): ProjectType;
-    public function update(ProjectTypeRequest $request, int $id): ProjectType;
-    public function destroy(int $id): int;
-    public function count(array $filter): int;
+    /**
+     *  get project type list
+     * @param array|[] $filter validated search request
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getList(?array $filter = []): LengthAwarePaginator;
+    /**
+     * store project type with validated data
+     * @param ProjectTypeRequest $request validated project type data
+     * @return void
+     */
+    public function store(ProjectTypeRequest $request): void;
+    /**
+     * update project type with validated data
+     * @param int $id project type id
+     * @param ProjectTypeRequest $request validated project type data
+     * @return void
+     */
+    public function update(int $id, ProjectTypeRequest $request): void;
+    /**
+     * delete project type
+     * @param int $id project type id
+     * @return void
+     */
+    public function destroy(int $id): void;
 }

@@ -6,6 +6,7 @@ use App\Contracts\Dao\UserDaoInterface;
 use App\Data\User\CreateUserData;
 use App\Data\User\UpdateUserData;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -21,62 +22,49 @@ class UserDao implements UserDaoInterface
         protected User $user
     ) {}
 
-    /**
-     * @inheritDoc
-     */
     public function getList(): Collection
     {
         return $this->user::get();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function store(CreateUserData $data): User|null
     {
         return $this->user::create($data->toArray());
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDetail(int $id): User
     {
         return $this->user::findOrFail($id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function update(int $id, UpdateUserData $data): void
     {
         $this->user::findOrFail($id)->update($data->toArray());
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete(int $id): void
     {
         $this->user::findOrFail($id)->delete();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getByAttribute(string $attribute, mixed $value): User
     {
         return $this->user::where($attribute, $value)
             ->first();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isSuperAdmin(int $id): bool
     {
         return $this->user::where('id', $id)
             ->where('role', $this->user::SUPER)
+            ->exists();
+    }
+
+    public function isValidUser(int $id, int $role): bool
+    {
+        return $this->user::where('id', $id)
+            ->where('role', $role)
+            ->whereDoesntHave('members')
             ->exists();
     }
 }

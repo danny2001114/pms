@@ -7,22 +7,20 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 
 class TeamRequest extends FormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * rules for team validation
+     * @return array{description: string[], image: string[], leader_code: string[], name: string[]}
      */
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100',
-            'leader_code' => 'required|string',
-            'image' => 'nullable|file|mimes:image/jpeg,image/png|max:2048',
-            'description' => 'nullable|string|max:5000'
+            'name' => ['required', 'string', 'max:100'],
+            'leader_code' => ['required', 'string'],
+            'image' => ['nullable', 'file', 'mimes:image/jpeg,image/png', 'max:2048'],
+            'description' => ['nullable', 'string', 'max:5000']
         ];
     }
 
@@ -36,7 +34,7 @@ class TeamRequest extends FormRequest
         $validator->after(function (Validator $validator) {
             $userService = app(UserServiceInterface::class);
             $extracedCode = $userService->extractCode($this->get('leader_code'));
-            $user = $userService->show($extracedCode['id']);
+            $user = $userService->getDetail($extracedCode['id']);
 
             if (empty($user)) {
                 $validator->errors()->add("leader_code", "The user code is not a valid code.");

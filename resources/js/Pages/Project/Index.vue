@@ -12,9 +12,12 @@ const props = defineProps({
 </script>
 <template>
   <div class="d-flex align-items-center">
-    <h3>Project List</h3>
+    <h3 class="m-0">Project List</h3>
     <BButton class="ms-auto" size="sm" variant="primary" @click="router.visit(route('project.create'))">
       Add
+    </BButton>
+    <BButton class="ms-2" size="sm" variant="primary" @click="router.visit(route('project.type.index'))">
+      Add Type
     </BButton>
   </div>
   <hr>
@@ -27,7 +30,7 @@ const props = defineProps({
           <BListGroupItem class="d-flex" v-for="project in list.data" :key="project.id"
             v-if="list.data.length" @click="router.visit(route('project.show', project.id))" button>
             {{ project.title }}
-            <BButton variant="danger" @click.stop="router.delete(route('project.destroy', project.id))" class="ms-auto">
+            <BButton variant="danger" size="sm" @click.stop="router.delete(route('project.destroy', project.id))" class="ms-auto">
               Delete
             </BButton>
           </BListGroupItem>

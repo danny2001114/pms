@@ -11,7 +11,7 @@ use App\Models\Project;
 interface ProjectServiceInterface
 {
     /**
-     * get user list
+     * get project list
      * @return array{peding: \Illuminate\Pagination\LengthAwarePaginator, processing: \Illuminate\Pagination\LengthAwarePaginator, completed: \Illuminate\Pagination\LengthAwarePaginator}
      */
     public function getList(): array;

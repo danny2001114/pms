@@ -165,6 +165,7 @@ Route::middleware('auth')
                          ->whereNumber('team_id')
                          ->controller(TeamMemberController::class)
                          ->group(function () {
+                              Route::post('', 'store')->name('store');
                               Route::delete('{id}', 'destroy')->whereNumber('id')->name('destroy');
                          });
                });

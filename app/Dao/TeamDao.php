@@ -6,7 +6,6 @@ use App\Contracts\Dao\TeamDaoInterface;
 use App\Data\Team\CreateTeamData;
 use App\Data\Team\UpdateTeamData;
 use App\Models\Team;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -22,9 +21,6 @@ class TeamDao implements TeamDaoInterface
         protected Team $team
     ) {}
 
-    /**
-     * @inheritDoc
-     */
     public function getList(): LengthAwarePaginator
     {
         return $this->team::with('leader:id,name')
@@ -32,9 +28,6 @@ class TeamDao implements TeamDaoInterface
             ->paginate();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function store(CreateTeamData $data): Team
     {
         $data = $data->toArray();
@@ -46,34 +39,22 @@ class TeamDao implements TeamDaoInterface
         return $team;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDetail(int $id): Team
     {
         return $this->team::with([
             'leader:id,name,role',
-            'members' => function (HasMany $query) {
-                $query->select('team_id', 'member_id', "id")
-                    ->with('user:id,name');
-            },
+            'members.user:id,name,role'
         ])
             ->withCount(['members'])
             ->findOrFail($id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function update(int $id, UpdateTeamData $data): void
     {
         $this->team::findOrFail($id)
             ->update($data->toArray());
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete(int $id): void
     {
         $this->team::findOrFail($id)
