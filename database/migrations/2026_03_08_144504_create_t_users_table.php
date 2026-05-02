@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('t_users', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 10)->nullable();
             $table->string('password', 60);
             $table->string('name', 100);
             $table->string("email", 100)->nullable();
             $table->string("phone", 11)->nullable();
             $table->tinyInteger('role')->default(1)->comment("1: member, 2: leader, 3: admin, 4: super");
-            $table->tinyInteger("gender")->nullable()->comment("1: male, 2: female");
-            $table->date("birthday")->nullable();
-            $table->text("address")->nullable();
-            $table->text("bio")->nullable();
-            $table->string("image", 100)->nullable();
+            $table->boolean('is_request')->default(false);
             $table->rememberToken();
-            $table->softDeletesDatetime();
             $table->timestamps();
+            $table->softDeletesDatetime();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -43,7 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('t_users');
         Schema::dropIfExists('sessions');
     }
 };

@@ -5,14 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectType extends Model
+class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'project_types';
+    protected $table = 't_categories';
     protected $fillable = [
-        'label',
+        'name',
+        'logo',
         'remark',
         'active'
+    ];
+
+    protected $casts = [
+        "active" => 'boolean'
     ];
 }

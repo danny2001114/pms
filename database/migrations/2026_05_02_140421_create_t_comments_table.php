@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('t_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->unsignedBigInteger('leader_id');
-            $table->string('image', 100)->nullable();
-            $table->text('description')->nullable();
+            $table->morphs('ref');  // Project, Task, Post
+            $table->unsignedBigInteger('user_id');
+            $table->text('comment');
             $table->timestamps();
-            $table->foreign('leader_id')->on('users')->references('id')->restrictOnDelete();
+
+            $table->foreign('user_id')->on('t_users')->references('id')->cascadeOnDelete();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('t_comments');
     }
 };

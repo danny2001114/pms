@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('t_tasks', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('issue');
-            $table->string('code', 100);
+            $table->string('issue_no', 10);
+            $table->bigInteger('assignor_id');
+            $table->bigInteger('assignee_id');
             $table->unsignedBigInteger('project_id');
-            $table->text('description');
+            $table->tinyInteger('state')->default(1)->comment('1: pending, 2: on hold, 3: testing, 4: fixing, 5: completed');
             $table->tinyInteger('priority')->default(2)->comment('1: low, 2: mediumn, 3: high');
-            $table->tinyInteger('state')->default(1)->comment('1: pending, 2: developing, 3: testing, 4: fixing, 5: completed');
             $table->integer('percentage')->default(0);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->datetime('start_datetime')->useCurrent();
+            $table->datetime('end_datetime');
             $table->timestamps();
-            $table->foreign('project_id')->on('projects')->references('id')->cascadeOnDelete();
+            $table->softDeletes();
+
+            $table->foreign('project_id')->on('t_projects')->references('id')->cascadeOnDelete();
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('t_tasks');
     }
 };

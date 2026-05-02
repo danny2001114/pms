@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Assignee extends Model
+class Comment extends Model
 {
     use HasFactory;
-
-    protected $table = 'assignees';
+    
+    protected $table = 't_comments';
     protected $fillable = [
-        'task_id',
-        'member_id',
-        'cur_active',
-        'created_by',
-        'updated_by'
+        'ref_type',
+        'ref_id',
+        'user_id',
+        'comment'
     ];
 }

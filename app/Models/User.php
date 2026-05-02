@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -11,32 +13,31 @@ class User extends Authenticatable
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'users';
+    protected $table = 't_users';
     protected $fillable = [
+        'code',
         'password',
         'name',
         'email',
         'phone',
         'role',
-        'gender',
-        'birthday',
-        'address',
-        'bio',
-        'image'
+        'is_request'
     ];
 
+    protected $casts = [
+        'password' => 'hashed',
+        'is_request' => 'boolean'
+    ];
+
+    // ========= Roles ========= //
     public const MEMBER = 1;
     public const LEADER = 2;
     public const ADMIN = 3;
     public const SUPER = 4;
-    public const MALE = 1;
-    public const FEMALE = 2;
 
     // ========= Attributes ========= //
     protected $appends = [
-        'role_text',
-        'gender_text',
-        'code'
+        'role_text'
     ];
 
     protected function getRoleTextAttribute()
@@ -45,23 +46,29 @@ class User extends Authenticatable
         return config('constants.USER.ROLES.TEXT')[$this->role];
     }
 
-    protected function getGenderTextAttribute()
-    {
-        if (!$this->gender) return null;
-        return config('constants.USER.GENDERS.TEXT')[$this->gender] ?? null;
-    }
-
-    protected function getCodeAttribute()
-    {
-         if (!$this->role) return null;
-        $role = config('constants.USER.ROLES.TEXT')[$this->role][0];
-        $id = sprintf("%05d", $this->id);
-        return $role . $id;
-    }
-
     // ========= Relationships ========= //
-    public function members(): HasMany
+    public function profile(): HasOne
     {
-        return $this->hasMany(TeamMember::class, "member_id");
+        return $this->hasOne(Profile::class);
+    }
+
+    public function changeLog(): hasOne
+    {
+        return $this->hasOne(ChangeLog::class, 'role', 'role');
+    }
+
+    public function teams(): HasManyThrough
+    {
+        return $this->hasManyThrough(Team::class, Member::class);
+    }
+
+    public function bugs(): HasManyThrough
+    {
+        return $this->hasManyThrough(Bug::class, Task::class, 'assignee_id', 'task_id', 'id', 'id');
+    }
+
+    public function skills(): MorphMany
+    {
+        return $this->MorphMany(CommonSkill::class, 'ref');
     }
 }

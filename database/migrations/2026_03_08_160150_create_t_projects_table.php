@@ -11,23 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('t_projects', function (Blueprint $table) {
             $table->id();
             $table->string('key', 10)->unique();
-            $table->string('code', 100);
-            $table->string('title', 255);
-            $table->text('description');
+            $table->string('title');
             $table->unsignedBigInteger('owner_id');
             $table->tinyInteger('state')->default(1)->comment('1: develop, 2: maintain, 3: feature');
             $table->boolean('active')->default(true);
-            $table->unsignedBigInteger("type_id");
             $table->tinyInteger("priority")->default(1)->comment('1: low, 2: medium, 3: high');
-            $table->date('start_date');
+            $table->date('start_date')->useCurrent();
             $table->date('end_date');
             $table->integer('created_by');
             $table->timestamps();
-            $table->foreign('owner_id')->on('users')->references('id')->restrictOnDelete();
-            $table->foreign('type_id')->on('project_types')->references('id')->restrictOnDelete();
+            $table->softDeletes();
+
+            $table->foreign('owner_id')->on('t_users')->references('id')->restrictOnDelete();
         });
     }
 
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('t_projects');
     }
 };

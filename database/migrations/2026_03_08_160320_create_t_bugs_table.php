@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_skills', function (Blueprint $table) {
+        Schema::create('t_bugs', function (Blueprint $table) {
+            $table->id();
+            $table->string('code', 10);
             $table->unsignedBigInteger('task_id');
-            $table->unsignedBigInteger('skill_id');
+            $table->text('content');
+            $table->tinyInteger('state')->default(1)->comment('1: pending, 2: fixing, 3: completed, 4: close');
+            $table->bigInteger('created_by');
             $table->timestamps();
-            $table->foreign('task_id')->on('tasks')->references('id')->cascadeOnDelete();
-            $table->foreign('skill_id')->on('skills')->references('id')->restrictOnDelete();
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_skills');
+        Schema::dropIfExists('t_bugs');
     }
 };

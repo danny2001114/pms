@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('member_skills', function (Blueprint $table) {
+        Schema::create('t_members', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('skill_id');
-            $table->integer('level');
+            $table->unsignedBigInteger('team_id');
+            $table->boolean('is_leader')->default(false);
             $table->timestamps();
-            $table->foreign('member_id')->on('users')->references('id')->cascadeOnDelete();
-            $table->foreign('skill_id')->on('skills')->references('id')->restrictOnDelete();
+
+            $table->foreign('member_id')->on('t_users')->references('id')->cascadeOnDelete();
+            $table->foreign('team_id')->on('t_teams')->references('id')->cascadeOnDelete();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('member_skills');
+        Schema::dropIfExists('t_members');
     }
 };

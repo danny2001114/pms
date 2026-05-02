@@ -7,14 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TeamMember extends Model
+class Member extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'team_members';
+    protected $table = 't_members';
     protected $fillable = [
         'member_id',
         'team_id',
+        'is_leader'
+    ];
+
+    protected $casts = [
+        'is_leader' => 'boolean'
     ];
 
     // ========= Relationships ========= //
