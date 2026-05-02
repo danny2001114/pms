@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTypeController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamMemberController;
@@ -87,22 +88,6 @@ Route::middleware('auth')
                     Route::delete('{id}', 'destroy')->whereNumber('id')->name('destroy');
 
                     /**
-                     * Project Type
-                     * uri        - psm/project/type/*
-                     * prefix     - project.type.*
-                     * controller - ProjectTypeController
-                     */
-                    Route::prefix('type')
-                         ->as('type.')
-                         ->controller(ProjectTypeController::class)
-                         ->group(function () {
-                              Route::get('', 'index')->name('index');
-                              Route::post('', 'store')->name('store');
-                              Route::put('{id}', 'update')->whereNumber('id')->name('update');
-                              Route::delete('{id}', 'destroy')->whereNumber('id')->name('destroy');
-                         });
-
-                    /**
                      * Project Task
                      * uri        - psm/project/{project_id}/task/*
                      * prefix     - project.task.*
@@ -180,7 +165,45 @@ Route::middleware('auth')
                ->as('setting.')
                ->controller(SettingController::class)
                ->group(function () {
-                    Route::get('', 'index')->name('index');
-                    Route::get('/general', 'general')->name('general');
+                    Route::get('private', 'private')->name('private');
+                    Route::get('general', 'general')->name('general');
+
+
+                    Route::prefix('general')
+                         ->as('general.')
+                         ->group(function () {
+
+                              /**
+                               * Project Type
+                               * uri        - psm/setting/general/project_type/*
+                               * prefix     - setting.general.project_type.*
+                               * controller - ProjectTypeController
+                               */
+                              Route::prefix('project_type')
+                                   ->as('project_type.')
+                                   ->controller(ProjectTypeController::class)
+                                   ->group(function () {
+                                        Route::get('', 'index')->name('index');
+                                        Route::post('', 'store')->name('store');
+                                        Route::put('{id}', 'update')->whereNumber('id')->name('update');
+                                        Route::delete('{id}', 'destroy')->whereNumber('id')->name('destroy');
+                                   });
+
+                              /**
+                               * Skill
+                               * uri        - psm/setting/general/skill/*
+                               * prefix     - setting.general.skill.*
+                               * controller - SkillController
+                               */
+                              Route::prefix('skill')
+                                   ->as('skill.')
+                                   ->controller(SkillController::class)
+                                   ->group(function () {
+                                        Route::get('', 'index')->name('index');
+                                        Route::post('', 'store')->name('store');
+                                        Route::put('{id}', 'update')->whereNumber('id')->name('update');
+                                        Route::delete('{id}', 'destroy')->whereNumber('id')->name('destroy');
+                                   });
+                         });
                });
      });

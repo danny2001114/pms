@@ -16,8 +16,11 @@ return [
     "ProjectType" => [
         "Index" => "ProjectType/Index",
     ],
+    "Skill" => [
+        "Index" => "Skill/Index",
+    ],
     "Setting" => [
-        "Index" => "Setting/Index",
+        "Private" => "Setting/Private",
         "General" => "Setting/General",
     ],
     "Task" => [

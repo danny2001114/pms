@@ -6,6 +6,7 @@ import {
   BCol
 } from 'bootstrap-vue-next';
 import { router } from '@inertiajs/vue3';
+import Task from '@/Pages/Task/Index.vue';
 
 const props = defineProps({
   project: Object
@@ -55,7 +56,10 @@ const props = defineProps({
     <p class="mt-3">Description</p>
     <p>{{ project.description }}</p>
   </BCard>
-  <div class="my-3">
+  <div class="my-3 d-flex justify-content-between">
     <BButton variant="outline-secondary" @click="router.visit(route('project.index'))">Back</BButton>
+    <BButton variant="primary" @click="router.visit(route('project.task.create', project.id))">Add</BButton>
   </div>
+
+  <Task :tasks="project.tasks" :projectId="project.id" />
 </template>

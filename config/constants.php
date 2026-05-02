@@ -43,6 +43,13 @@ return [
                 Task::TESTING => 'Testing',
                 Task::FIXING => 'Fixing',
                 Task::COMPLETED => 'Completed'
+            ],
+            'OPTIONS' => [
+                ['value' => Task::PENDING, 'text' => 'Pending'],
+                ['value' => Task::DEVELOPING, 'text' => 'Developing'],
+                ['value' => Task::TESTING, 'text' => 'Testing'],
+                ['value' => Task::FIXING, 'text' => 'Fixing'],
+                ['value' => Task::COMPLETED, 'text' => 'Completed']
             ]
         ],
         'PRIORITIES' => [
@@ -51,6 +58,11 @@ return [
                 Task::PRIORITY_LOW => 'Low',
                 Task::PRIORITY_MEDIUM => 'Medium',
                 Task::PRIORITY_HIGH => 'High'
+            ],
+            'OPTIONS' => [
+                ['value' => Task::PRIORITY_LOW, 'text' => 'Low'],
+                ['value' => Task::PRIORITY_MEDIUM, 'text' => 'Medium'],
+                ['value' => Task::PRIORITY_HIGH, 'text' => 'High']
             ]
         ]
     ],

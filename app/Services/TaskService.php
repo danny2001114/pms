@@ -10,6 +10,7 @@ use App\Http\Requests\Task\TaskRequest;
 use App\Models\Task;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TaskService implements TaskServiceInterface
 {
@@ -27,11 +28,12 @@ class TaskService implements TaskServiceInterface
     public function store(int $projectId, TaskRequest $request): void
     {
         $data = $request->validated();
-        $data['code']       = $this->generateCode($data["start_date"]);
+        $data['code'] = $this->generateCode($data["start_date"]);
         $data['project_id'] = $projectId;
-        $this->taskDao->store(
-            $this->createTaskData::from($data)
-        );
+
+        DB::transaction(function () use ($data) {
+            $this->taskDao->store($this->createTaskData::from($data));
+        });
     }
 
     public function show(int $id): Task
@@ -41,15 +43,16 @@ class TaskService implements TaskServiceInterface
 
     public function update(int $id, TaskRequest $request): void
     {
-        $this->taskDao->update(
-            $id,
-            $this->updateTaskData::from($request->validated())
-        );
+        DB::transaction(function () use ($id, $request) {
+            $this->taskDao->update($id, $this->updateTaskData::from($request->validated()));
+        });
     }
 
-    public function delete($id): void
+    public function delete(int $id): void
     {
-        $this->taskDao->delete($id);
+        DB::transaction(function () use ($id) {
+            $this->taskDao->delete($id);
+        });
     }
 
     protected function generateCode(string $date): string

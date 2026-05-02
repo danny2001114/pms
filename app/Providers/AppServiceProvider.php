@@ -4,24 +4,28 @@ namespace App\Providers;
 
 use App\Contracts\Dao\ProjectDaoInterface;
 use App\Contracts\Dao\ProjectTypeDaoInterface;
+use App\Contracts\Dao\SkillDaoInterface;
 use App\Contracts\Dao\TaskDaoInterface;
 use App\Contracts\Dao\TeamDaoInterface;
 use App\Contracts\Dao\TeamMemberDaoInterface;
 use App\Contracts\Dao\UserDaoInterface;
 use App\Contracts\Services\ProjectServiceInterface;
 use App\Contracts\Services\ProjectTypeServiceInterface;
+use App\Contracts\Services\SkillServiceInterface;
 use App\Contracts\Services\TaskServiceInterface;
 use App\Contracts\Services\TeamMemberServiceInterface;
 use App\Contracts\Services\TeamServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
 use App\Dao\ProjectDao;
 use App\Dao\ProjectTypeDao;
+use App\Dao\SkillDao;
 use App\Dao\TaskDao;
 use App\Dao\TeamDao;
 use App\Dao\TeamMemberDao;
 use App\Dao\UserDao;
 use App\Services\ProjectService;
 use App\Services\ProjectTypeService;
+use App\Services\SkillService;
 use App\Services\TaskService;
 use App\Services\TeamMemberService;
 use App\Services\TeamService;
@@ -39,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         // Services registrations
         $this->app->bind(ProjectServiceInterface::class, ProjectService::class);
         $this->app->bind(ProjectTypeServiceInterface::class, ProjectTypeService::class);
+        $this->app->bind(SkillServiceInterface::class, SkillService::class);
         $this->app->bind(TaskServiceInterface::class, TaskService::class);
         $this->app->bind(TeamMemberServiceInterface::class, TeamMemberService::class);
         $this->app->bind(TeamServiceInterface::class, TeamService::class);
@@ -47,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         // Dao registrations
         $this->app->bind(ProjectDaoInterface::class, ProjectDao::class);
         $this->app->bind(ProjectTypeDaoInterface::class, ProjectTypeDao::class);
+        $this->app->bind(SkillDaoInterface::class, SkillDao::class);
         $this->app->bind(TaskDaoInterface::class, TaskDao::class);
         $this->app->bind(TeamMemberDaoInterface::class, TeamMemberDao::class);
         $this->app->bind(TeamDaoInterface::class, TeamDao::class);

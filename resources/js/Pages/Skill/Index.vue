@@ -1,47 +1,32 @@
 <script setup>
-import {
-  BButton,
-  BCard,
-  BInputGroup,
-  BFormGroup,
-  BForm,
-  BFormInput,
-  BFormInvalidFeedback,
-  BFormRadioGroup,
-  BFormCheckbox,
-  BTable,
-  BFormTextarea
-} from 'bootstrap-vue-next';
 import { router, useForm } from '@inertiajs/vue3';
 import { back } from '@/Utilities/helpers';
 
 const props = defineProps({
   auth: Object,
   errors: Object,
-  projectTypes: Object
+  skills: Object
 });
 
 const form = useForm({
   id: '',
-  label: '',
-  remark: '',
+  name: '',
   active: true,
 });
 
 const search = useForm({
-  label: ''
+  name: ''
 })
 
 const fields = [
   { key: 'serial', label: 'No.' },
-  { key: 'label', label: 'Label' },
-  { key: 'remark', label: 'Remark' },
+  { key: 'name', label: 'Name' },
   { key: 'active', label: 'Active' },
   { key: 'actions', label: 'Actions' }
 ];
 
 function store() {
-  form.post(route('project.type.store'), {
+  form.post(route('setting.general.skill.store'), {
     onSuccess: () => {
       clear();
     }
@@ -49,7 +34,7 @@ function store() {
 }
 
 function update() {
-  form.put(route('project.type.update', form.id), {
+  form.put(route('setting.general.skill.update', form.id), {
     onSuccess: () => {
       clear();
     }
@@ -69,33 +54,28 @@ function clear() {
 }
 
 function filter() {
-  search.get(route('project.type.index'), {
+  search.get(route('setting.general.skill.index'), {
     preserveState: true,
     onStart: clear
   })
 }
 </script>
 <template>
-  <h3 class="m-0">Project Type Manage</h3>
+  <h3 class="m-0">Skill Manage</h3>
   <hr>
 
   <BForm @submit.prevent="form.id ? store : update">
     <BCard>
       <div class="d-flex flex-column gap-2">
-        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="label" label="Label">
-          <BFormInput type="text" id="label" v-model="form.label" />
-          <div class="text-danger" v-if="form.errors.label">{{ form.errors.label }}</div>
+        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="name" label="Name">
+          <BFormInput type="text" id="name" v-model="form.name" />
+          <div class="text-danger" v-if="form.errors.name">{{ form.errors.name }}</div>
         </BFormGroup>
 
         <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="label" label="Label">
           <BFormCheckbox id="active" v-model="form.active" switch />
           <div class="text-danger" v-if="form.errors.active">{{ form.errors.active }}</div>
           <div class="text-danger" v-if="form.errors.label">{{ form.errors.label }}</div>
-        </BFormGroup>
-
-        <BFormGroup label-cols="12" label-cols-md="4" label-cols-lg="2" label-for="remark" label="Remark">
-          <BFormTextarea type="text" id="remark" v-model="form.remark" />
-          <div class="text-danger" v-if="form.errors.remark">{{ form.errors.remark }}</div>
         </BFormGroup>
       </div>
       <template #footer>
@@ -124,7 +104,7 @@ function filter() {
     </div>
   </div>
   <div class="scrollable-table mt-3">
-    <BTable :items="projectTypes.data" :fields="fields" striped hover>
+    <BTable :items="skills.data" :fields="fields" striped hover>
       <template #cell(serial)="data">
         {{ data.index + 1 }}
       </template>
@@ -135,7 +115,7 @@ function filter() {
         <BButton variant="warning" size="sm" class="me-1" @click="edit(data.item)">
           Edit
         </BButton>
-        <BButton variant="danger" size="sm" @click="router.delete(route('project.type.destroy', data.item.id))">
+        <BButton variant="danger" size="sm" @click="router.delete(route('setting.general.skill.destroy', data.item.id))">
           Delete
         </BButton>
       </template>

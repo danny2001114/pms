@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('key', 10)->unique();
             $table->string('code', 100);
             $table->string('title', 255);
             $table->text('description');

@@ -6,7 +6,7 @@ import {
   BCol
 } from 'bootstrap-vue-next';
 import { router } from '@inertiajs/vue3';
-import TeamMember from '@/Pages/TeamMember/Index.vue'
+import TeamMember from '@/Pages/TeamMember/Index.vue';
 
 const props = defineProps({
   team: Object

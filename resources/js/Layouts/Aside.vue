@@ -1,24 +1,8 @@
 <script setup>
-import {
-  BListGroup,
-  BListGroupItem
-} from 'bootstrap-vue-next';
 import { ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
+import routes from '@/app/routes';
 
-// ==== vars ==== //
-const nav = [
-  { route: "dashboard.index", label: "Dashboard" },
-  { route: "user.index", label: "User" },
-  { route: "team.index", label: "Team" },
-  { route: "project.index", label: "Project" },
-  // {
-  //   label: "Setting", sub: [
-  //     { route: "setting.index", label: "Private" },
-  //     { route: "setting.general", label: "General" }
-  //   ]
-  // },
-];
 const width = {
   close: 50,
   open: 250,
@@ -27,7 +11,6 @@ const show = ref(false);
 const sidebar = ref(null);
 const menuBtn = ref(null);
 
-// ==== watchers ==== //
 watch(show, function (show) {
   const menuList = sidebar.value.querySelector(".scroll");
   if (show) {
@@ -41,67 +24,14 @@ watch(show, function (show) {
   }
 });
 
-// ==== emiters ==== //
 const emit = defineEmits([
   "onLink"
 ]);
 
-// ==== actions ==== //
 function logout() {
   router.delete(route('logout'));
 }
 </script>
-<style>
-#sidebar {
-  width: 50px;
-  height: 100vh;
-  box-shadow: 0 0 .3rem #2e2e2e;
-  position: sticky;
-  top: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  transition: width .8s ease-in-out;
-}
-
-#menu-btn {
-  width: 40px;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  border: none;
-  padding: 10px;
-  gap: 5px;
-}
-
-#menu-btn div {
-  width: 100%;
-  height: 3px;
-  background: black;
-  border-radius: 1rem;
-  transition: all 0.4s ease;
-}
-
-/* ACTIVE STATE */
-#menu-btn.active div:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-#menu-btn.active div:nth-child(2) {
-  opacity: 0;
-}
-
-#menu-btn.active div:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
-
-#sidebar .scroll {
-  width: 100%;
-  height: max-content;
-  opacity: 0%;
-  transition: opacity .6s linear;
-}
-</style>
 <template>
   <div id="sidebar" ref="sidebar">
     <button class="ms-auto" id="menu-btn" ref="menuBtn" @click="show = !show">
@@ -110,14 +40,23 @@ function logout() {
       <div></div>
     </button>
     <BListGroup class="scroll p-2">
-      <template v-for="item in nav" :key="item.route">
+      <template v-for="item in routes" :key="item.route">
         <BListGroupItem class="d-flex" @click="item.sub ? null : emit('onLink', item.route)" button>
-          {{ item.label }}
-          <span class="ms-auto" v-if="item.sub">arrow</span>
-        </BListGroupItem>
-        <BListGroupItem v-if="item.sub" v-for="subItem in item.sub" :key="subItem.route"
-          @click="emit('onLink', subItem.route)" button>
-          {{ subItem.label }}
+          <template v-if="item.sub">
+            <BAccordion>
+              <BAccordionItem :title="item.label">
+                <BListGroup>
+                  <BListGroupItem v-for="subItem in item.sub" :key="subItem.route"
+                    @click="emit('onLink', subItem.route)" button>
+                    {{ subItem.label }}
+                  </BListGroupItem>
+                </BListGroup>
+              </BAccordionItem>
+            </BAccordion>
+          </template>
+          <template v-else>
+            {{ item.label }}
+          </template>
         </BListGroupItem>
       </template>
       <BListGroupItem @click="logout" button>

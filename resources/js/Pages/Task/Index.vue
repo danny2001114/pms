@@ -1,38 +1,40 @@
 <script setup>
 import {
   BButton,
-  BListGroup,
-  BListGroupItem
+  BTable
 } from 'bootstrap-vue-next';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
+  projectId: Number,
   tasks: Object
 });
+
+const fields = [
+  { key: 'serial', label: '.No' },
+  { key: 'code', label: 'Code' },
+  { key: 'priority', label: 'Priority' },
+  { key: 'state', label: 'State' },
+  { key: 'percentage', label: 'Percentage' },
+  { key: 'start_date', label: 'Start Date' },
+  { key: 'end_date', label: 'End Date' },
+  { key: 'actions', label: 'Actions' }
+];
 </script>
 <template>
-  <div class="d-flex align-items-center">
-    <h3>Task List</h3>
-  </div>
-  <hr>
-
-  <div class="row">
-    <template v-for="([type, list]) in Object.entries(tasks)" :key="type">
-      <div class="col-4">
-        <h6>{{ type }}</h6>
-        <BListGroup>
-          <BListGroupItem class="d-flex" v-for="([_, task]) in Object.entries(list)" :key="task.id" v-if="list.length"
-            @click="router.visit(route('task.show', task.id))" button>
-            {{ task.description }}
-            <BButton variant="danger" @click.stop="router.delete(route('task.destroy', task.id))" class="ms-auto">
-              Delete
-            </BButton>
-          </BListGroupItem>
-          <BListGroupItem v-else>
-            Empty
-          </BListGroupItem>
-        </BListGroup>
-      </div>
-    </template>
+  <div class="scrollable-table mt-3">
+    <BTable :items="tasks" :fields="fields" striped hover>
+      <template #cell(serial)="data">{{ data.index + 1 }}</template>
+      <template #cell(actions)="data">
+        <BButton variant="warning" class="me-1" size="sm"
+          @click="router.visit(route('project.task.edit', [projectId, data.item.id]))">
+          Edit
+        </BButton>
+        <BButton variant="danger" size="sm"
+          @click="router.delete(route('project.task.destroy', [projectId, data.item.id]))">
+          Delete
+        </BButton>
+      </template>
+    </BTable>
   </div>
 </template>

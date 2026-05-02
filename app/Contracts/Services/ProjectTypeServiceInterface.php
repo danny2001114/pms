@@ -12,7 +12,7 @@ interface ProjectTypeServiceInterface
 {
     /**
      *  get project type list
-     * @param array|[] $filter validated search request
+     * @param ?array $filter validated search request
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getList(?array $filter = []): LengthAwarePaginator;

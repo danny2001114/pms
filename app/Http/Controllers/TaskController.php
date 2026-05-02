@@ -35,7 +35,7 @@ class TaskController extends Controller
     {
         return Inertia::render(page('Task.Edit'), [
             "projectId" => $projectId,
-            "task"      => $this->taskService->show($id),
+            "task" => $this->taskService->show($id),
             ...$this->appendOptions()
         ]);
     }
@@ -65,8 +65,8 @@ class TaskController extends Controller
     protected function appendOptions(): array
     {
         return [
-            "stateOptions"    => config('constants.TASK.STATES.TEXT'),
-            "priorityOptions" => config('constants.TASK.PRIORITIES.TEXT')
+            "states"    => config('constants.TASK.STATES.OPTIONS'),
+            "priorities" => config('constants.TASK.PRIORITIES.OPTIONS')
         ];
     }
 }

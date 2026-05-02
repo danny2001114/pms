@@ -12,5 +12,5 @@ interface TaskServiceInterface
     public function store(int $projectId, TaskRequest $request): void;
     public function show(int $id): Task;
     public function update(int $id, TaskRequest $request): void;
-    public function delete($id): void;
+    public function delete(int $id): void;
 }

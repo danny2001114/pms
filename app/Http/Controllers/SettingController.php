@@ -7,9 +7,9 @@ use Inertia\Inertia;
 
 class SettingController extends Controller
 {
-    public function index()
+    public function private()
     {
-        return Inertia::render(page("Setting.Index"));
+        return Inertia::render(page("Setting.Private"));
     }
 
     public function general()

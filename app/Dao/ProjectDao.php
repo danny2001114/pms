@@ -24,9 +24,6 @@ class ProjectDao implements ProjectDaoInterface
         protected Project $project
     ) {}
 
-    /**
-     * @inheritDoc
-     */
     public function getPending(): LengthAwarePaginator
     {
         $pending = $this->project::whereDoesntHave(
@@ -37,9 +34,6 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($pending);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getProcessing(): LengthAwarePaginator
     {
         $processing = $this->project::whereHas(
@@ -50,9 +44,6 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($processing);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getCompleted(): LengthAwarePaginator
     {
         $completed = $this->project::whereDoesntHave(
@@ -64,48 +55,34 @@ class ProjectDao implements ProjectDaoInterface
         return $this->getProject($completed);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDetail(int $id): Project
     {
         return $this->project::with([
             'owner:id,name,role',
             'recipient:id,name',
             'type:id,label',
+            'tasks:id,code,project_id,priority,state,percentage,start_date,end_date'
         ])
             ->findOrFail($id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function store(CreateProjectData $data): Project
     {
         return $this->project::create($data->toArray());
     }
 
-    /**
-     * @inheritDoc
-     */
     public function update(int $id, UpdateProjectData $data): void
     {
         $this->project::findOrFail($id)
             ->update($data->toArray());
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete(int $id): void
     {
         $this->project::findOrFail($id)
             ->delete();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function countByDate(Carbon $date): int
     {
         return $this->project::whereDate('created_at', $date)

@@ -8,6 +8,7 @@ import { createPinia } from 'pinia';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import { createBootstrap } from 'bootstrap-vue-next/plugins/createBootstrap';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -28,6 +29,7 @@ createInertiaApp({
         app.use(plugin)
             .use(ZiggyVue)
             .use(createPinia())
+            .use(createBootstrap())
             .mount(el);
 
         return app;

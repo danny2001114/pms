@@ -26,7 +26,7 @@ class TaskRequest extends FormRequest
 
     protected function getProjectDateRange(ProjectServiceInterface $projectService)
     {
-        $project = $projectService->show($this->project_id);
+        $project = $projectService->getDetail($this->project_id);
         return (object) [
             "start_date" => $project->start_date ?? "",
             "end_date"   => $project->end_date ?? ""

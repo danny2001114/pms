@@ -1,0 +1,107 @@
+#sidebar {
+  width: 50px;
+  height: 100vh;
+  box-shadow: 0 0 .3rem #2e2e2e;
+  position: sticky;
+  top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  transition: width .8s ease-in-out;
+}
+
+#menu-btn {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  gap: 5px;
+}
+
+#menu-btn div {
+  width: 100%;
+  height: 3px;
+  background: black;
+  border-radius: 1rem;
+  transition: all 0.4s ease;
+}
+
+#menu-btn.active div:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+#menu-btn.active div:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-btn.active div:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+#sidebar .list-group-item:has(.accordion) {
+  padding: 0;
+}
+
+#sidebar .accordion {
+  width: 100%;
+}
+
+#sidebar .accordion-item:first-of-type > .accordion-header .accordion-button {
+  padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+  border-radius: 0;
+}
+
+#sidebar .accordion-item:last-of-type {
+  border-radius: 0;
+  border: none;
+}
+
+#sidebar .accordion-body {
+  padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+}
+
+#sidebar .accordion-body {
+  padding: 0;
+}
+
+#sidebar .accordion .list-group-item {
+  border-left: none;
+  border-right: none;
+  padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+}
+
+#sidebar .accordion .list-group-item:first-child {
+  border-radius: 0;
+}
+
+#sidebar .accordion .list-group-item:last-child {
+  border-bottom: none;
+}
+
+#sidebar .accordion-item:last-of-type:has(.collapsing),
+#sidebar .accordion-item:last-of-type:has(.show) {
+  border: var(--bs-list-group-border-width) solid red;
+}
+
+#sidebar .accordion-button:focus {
+  box-shadow: none;
+  color: inherit;
+  background-color: inherit;
+}
+
+#sidebar .accordion-button:not(.collapsed)::after {
+  background-image: var(--bs-accordion-btn-icon);
+}
+
+#sideba .accordion-button:not(.collapsed) {
+  color: inherit;
+}
+
+#sidebar .scroll {
+  width: 100%;
+  height: max-content;
+  opacity: 0%;
+  transition: opacity .6s linear;
+}

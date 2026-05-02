@@ -16,9 +16,6 @@ const props = defineProps({
     <BButton class="ms-auto" size="sm" variant="primary" @click="router.visit(route('project.create'))">
       Add
     </BButton>
-    <BButton class="ms-2" size="sm" variant="primary" @click="router.visit(route('project.type.index'))">
-      Add Type
-    </BButton>
   </div>
   <hr>
 
